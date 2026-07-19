@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pest Warriors — Calgary Pest Control Website
 
-## Getting Started
+Premium lead-generation website for Pest Warriors, built with Next.js (App
+Router), TypeScript, Tailwind CSS, Framer Motion, and Lucide icons.
 
-First, run the development server:
+## Routes
+
+| Route       | Purpose                                              |
+| ----------- | ---------------------------------------------------- |
+| `/`         | Homepage (hero, services, about, FAQ, offers, CTAs)  |
+| `/services` | Detailed service pages for the five primary services |
+| `/contact`  | Quote-request form + contact information             |
+| `/privacy`  | Privacy policy placeholder                           |
+| `/terms`    | Terms & conditions placeholder                       |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # local development at http://localhost:3000
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contact-form email setup (one required step before launch)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The quote form posts to `/api/contact`, which sends email via SMTP using
+Nodemailer. Configure it:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Copy `.env.example` to `.env.local`.
+2. Fill in `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and
+   optionally `SMTP_FROM` with credentials from any SMTP provider
+   (Resend, Brevo, Mailgun, SendGrid, or the hosting provider's SMTP).
+3. The recipient address is `contact.formRecipient` in
+   `src/config/site.ts` (currently the client's email).
 
-## Learn More
+Until SMTP is configured, the form shows a clear "temporarily unavailable —
+call or email us" message instead of silently failing. No email keys are ever
+exposed to the browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Creating a new city version
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All location-specific data lives in `src/config/site.ts`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Update the `location` object (city, province, service areas).
+2. Update `hero`, `seo`, and `contact` copy for the new city.
+3. Replace the two images in `public/images/` (or update paths in
+   `siteConfig.images`).
+4. Review `src/config/services.ts` — service copy is city-agnostic, but each
+   city site should get some unique local copy to avoid duplicate content.
 
-## Deploy on Vercel
+## Replacing the temporary logo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Set `business.logoSrc` in `src/config/site.ts` to the uploaded logo path
+(e.g. `"/images/logo.svg"`). The header, footer, and intro wordmark switch
+over automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Configurable business claims (client must confirm)
+
+- **"200,000+ treatments completed"** — disabled by default; enable at
+  `stats.treatmentsCompleted.enabled` in `src/config/site.ts`.
+- **Warranty wording** — `guarantee` object in `src/config/site.ts`
+  (responsible wording; toggle off to hide).
+- **20% new-customer offer** — `offer` object in `src/config/site.ts`.
+
+## Image sources
+
+Both photos were taken from the client's existing website
+(https://pestwarriors.ca/) as requested, optimized to WebP:
+
+- `public/images/pest-warriors-calgary-hero.webp` — technician photo
+- `public/images/pest-warriors-professional-service.webp` — heat-treatment equipment
