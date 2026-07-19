@@ -57,6 +57,11 @@ body {
   border-radius: 4px;
 }
 
+/* Intro overlay: hidden before hydration for returning/reduced-motion visitors */
+html[data-intro-done] #intro-loader {
+  display: none;
+}
+
 /* Subtle blueprint grid on dark sections */
 .bg-grid-dark {
   background-image: linear-gradient(
