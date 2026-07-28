@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { CmsContent, EditablePage, EditableService, ServiceFaq } from "@/types/cms";
 
 type Tab = "pages" | "services" | "faqs" | "settings";
@@ -15,6 +16,7 @@ async function uploadImage(file: File): Promise<string> {
 }
 
 export default function AdminPage() {
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("pages");
   const [content, setContent] = useState<CmsContent | null>(null);
   const [saving, setSaving] = useState(false);
@@ -31,6 +33,12 @@ export default function AdminPage() {
     void load();
   }, []);
 
+  const logout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.replace("/admin/login");
+    router.refresh();
+  };
+
   const selectedPage = useMemo(
     () => (content?.pages?.[pageIdx] ? content.pages[pageIdx] : null),
     [content, pageIdx],
@@ -41,7 +49,7 @@ export default function AdminPage() {
   );
 
   if (!content) {
-    return <main className="bg-base-950 pt-36 pb-16 text-center text-white">Loading admin panel...</main>;
+    return <main className="bg-base-950 py-16 text-center text-white">Loading admin panel...</main>;
   }
 
   const save = async () => {
@@ -82,7 +90,22 @@ export default function AdminPage() {
     value.split("\n").map((line) => line.trim()).filter(Boolean);
 
   return (
-    <main className="bg-base-950 pt-28 pb-16 text-white">
+    <main className="bg-base-950 py-8 text-white">
+      <div className="mx-auto mb-6 flex max-w-7xl items-center justify-between px-4 lg:px-8">
+        <div>
+          <p className="text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
+            Pest Warriors CMS
+          </p>
+          <h1 className="font-display text-2xl font-extrabold">Admin Dashboard</h1>
+        </div>
+        <button
+          type="button"
+          onClick={logout}
+          className="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-white hover:border-gold-500 hover:text-gold-500"
+        >
+          Log out
+        </button>
+      </div>
       <div className="mx-auto grid max-w-7xl gap-6 px-4 lg:grid-cols-[250px_1fr] lg:px-8">
         <aside className="rounded-2xl border border-white/10 bg-base-900/80 p-4">
           {(["pages", "services", "faqs", "settings"] as Tab[]).map((item) => (
