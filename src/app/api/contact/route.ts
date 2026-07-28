@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { siteConfig } from "@/config/site";
+import { getCmsContent } from "@/lib/cms";
 import {
   validateContactForm,
   type ContactFormData,
@@ -17,6 +18,8 @@ function fieldOrEmpty(form: FormData, key: string): string {
 }
 
 export async function POST(request: Request) {
+  const cms = await getCmsContent();
+  const site = cms.site;
   let form: FormData;
   try {
     form = await request.formData();
@@ -114,7 +117,7 @@ export async function POST(request: Request) {
   ];
 
   const textBody = [
-    `New quote request from the ${siteConfig.business.name} website`,
+    `New quote request from the ${site.businessName} website`,
     "",
     ...rows.map(([label, value]) => `${label}: ${value}`),
     "",
@@ -125,7 +128,7 @@ export async function POST(request: Request) {
   try {
     await transporter.sendMail({
       from: SMTP_FROM ?? SMTP_USER,
-      to: siteConfig.contact.formRecipient,
+      to: site.formRecipient || siteConfig.contact.formRecipient,
       replyTo: data.email,
       subject: `Quote Request — ${data.pestType} (${data.serviceType}) — ${data.fullName}`,
       text: textBody,

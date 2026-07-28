@@ -1,8 +1,9 @@
 import { Accordion } from "@/components/Accordion";
 import { Reveal } from "@/components/Reveal";
-import { homeFaqs } from "@/config/services";
+import { getCmsContent } from "@/lib/cms";
 
-export function FaqSection() {
+export async function FaqSection() {
+  const cms = await getCmsContent();
   return (
     <section id="faq" className="bg-base-950 py-20 lg:py-24">
       <div className="mx-auto max-w-3xl px-4 lg:px-8">
@@ -15,7 +16,7 @@ export function FaqSection() {
           </h2>
         </Reveal>
         <Reveal delay={0.1} className="mt-10">
-          <Accordion items={homeFaqs} tone="dark" />
+          <Accordion items={cms.faqs} tone="dark" />
         </Reveal>
       </div>
     </section>

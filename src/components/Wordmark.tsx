@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ShieldCheck } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import type { SiteSettings } from "@/types/cms";
 
 /**
  * Temporary typographic wordmark. When the client supplies a final logo,
@@ -10,16 +11,22 @@ import { siteConfig } from "@/config/site";
 export function Wordmark({
   variant = "light",
   className = "",
+  site,
 }: {
   /** "dark" = navy text on light bg, "light" = white text on dark bg */
   variant?: "dark" | "light";
   className?: string;
+  site?: SiteSettings;
 }) {
-  if (siteConfig.business.logoSrc) {
+  const logoSrc = site?.logoSrc || siteConfig.business.logoSrc;
+  const businessName = site?.businessName || siteConfig.business.name;
+  const city = site?.city || siteConfig.location.city;
+
+  if (logoSrc) {
     return (
       <Image
-        src={siteConfig.business.logoSrc}
-        alt={siteConfig.business.name}
+        src={logoSrc}
+        alt={businessName}
         width={180}
         height={48}
         className={className}
@@ -40,7 +47,7 @@ export function Wordmark({
           PEST&nbsp;WARRIORS
         </span>
         <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-500">
-          Pest Control &middot; {siteConfig.location.city}
+          Pest Control &middot; {city}
         </span>
       </span>
     </span>

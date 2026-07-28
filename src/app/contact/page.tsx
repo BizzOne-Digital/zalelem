@@ -10,6 +10,7 @@ import {
 import { FacebookIcon } from "@/components/FacebookIcon";
 import { ContactForm } from "@/components/ContactForm";
 import { Reveal } from "@/components/Reveal";
+import { getCmsContent } from "@/lib/cms";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -32,7 +33,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const cms = await getCmsContent();
+  const site = cms.site;
   return (
     <>
       {/* Page hero */}
@@ -45,7 +48,7 @@ export default function ContactPage() {
         <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
           <h1 className="font-display max-w-3xl text-4xl leading-[1.1] font-extrabold tracking-tight sm:text-5xl">
             Request Pest Control Service in{" "}
-            <span className="text-gold-500">{siteConfig.location.city}</span>
+            <span className="text-gold-500">{site.city}</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
             Tell us what you are experiencing and provide a few details about
@@ -81,7 +84,7 @@ export default function ContactPage() {
                 <ul className="mt-5 space-y-4">
                   <li>
                     <a
-                      href={siteConfig.contact.phoneHref}
+                      href={site.phoneHref}
                       className="group flex items-center gap-3.5"
                     >
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-600/20 text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
@@ -92,14 +95,14 @@ export default function ContactPage() {
                           Call or text
                         </span>
                         <span className="font-bold text-white">
-                          {siteConfig.contact.phone}
+                          {site.phone}
                         </span>
                       </span>
                     </a>
                   </li>
                   <li>
                     <a
-                      href={siteConfig.contact.emailHref}
+                      href={site.emailHref}
                       className="group flex items-center gap-3.5"
                     >
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-600/20 text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
@@ -108,14 +111,14 @@ export default function ContactPage() {
                       <span>
                         <span className="block text-xs text-muted">Email</span>
                         <span className="font-bold break-all text-white">
-                          {siteConfig.contact.email}
+                          {site.email}
                         </span>
                       </span>
                     </a>
                   </li>
                   <li>
                     <a
-                      href={siteConfig.contact.facebook}
+                      href={site.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-3.5"
@@ -140,15 +143,14 @@ export default function ContactPage() {
                   Service Area
                 </h2>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                  {siteConfig.location.serviceAreas.join(", ")}.{" "}
-                  {siteConfig.location.serviceAreasNote}
+                  {site.serviceAreas.join(", ")}. {site.serviceAreasNote}
                 </p>
                 <h2 className="font-display mt-6 flex items-center gap-2 text-base font-bold text-white">
                   <Clock3 className="h-4 w-4 text-green-400" aria-hidden="true" />
                   What to Expect
                 </h2>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                  {siteConfig.contact.responseMessage}
+                  {site.responseMessage}
                 </p>
                 <h2 className="font-display mt-6 flex items-center gap-2 text-base font-bold text-white">
                   <Siren className="h-4 w-4 text-green-400" aria-hidden="true" />

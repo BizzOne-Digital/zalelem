@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { IntroLoader } from "@/components/IntroLoader";
 import { siteConfig } from "@/config/site";
+import { getCmsContent } from "@/lib/cms";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,11 +31,13 @@ export const metadata: Metadata = {
   description: siteConfig.seo.home.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cms = await getCmsContent();
+
   return (
     <html
       lang="en-CA"
@@ -48,11 +51,11 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Header />
+        <Header site={cms.site} />
         <main id="main-content" className="flex-1">
           {children}
         </main>
-        <Footer />
+        <Footer site={cms.site} services={cms.services} />
       </body>
     </html>
   );

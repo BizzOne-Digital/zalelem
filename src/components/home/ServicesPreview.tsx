@@ -32,7 +32,7 @@ export function ServicesPreview() {
             return (
               <Reveal key={service.slug} delay={i * 0.06}>
                 <Link
-                  href={`/services#${service.slug}`}
+                  href={`/services/${service.slug}`}
                   className="group flex h-full flex-col items-center rounded-2xl border border-white/8 bg-base-800/70 p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:bg-base-800"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600/15 text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
