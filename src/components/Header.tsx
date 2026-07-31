@@ -10,6 +10,14 @@ import { primaryNav, locationLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import type { SiteSettings } from "@/types/cms";
 
+/** Shorter labels so the desktop bar fits without crushing the CTA. */
+const desktopLabels: Record<string, string> = {
+  "/commercial": "Commercial",
+  "/bed-bug-heat-treatment": "Bed Bugs",
+  "/how-heat-treatment-works": "Heat Process",
+  "/diy-pest-control": "DIY",
+};
+
 export function Header({ site }: { site?: SiteSettings }) {
   const runtime = {
     contact: {
@@ -51,13 +59,16 @@ export function Header({ site }: { site?: SiteSettings }) {
       : pathname === href;
 
   const linkClass = (href: string) =>
-    `rounded-md px-2 py-2 text-[0.78rem] font-semibold whitespace-nowrap transition-colors xl:px-2.5 ${
+    `rounded-md px-1.5 py-2 text-[0.75rem] font-semibold whitespace-nowrap transition-colors xl:px-2 xl:text-[0.8rem] ${
       isActive(href) ? "text-green-700" : "text-ink/80 hover:text-green-700"
     }`;
 
+  const navLabel = (href: string, label: string) =>
+    desktopLabels[href] ?? label;
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="hidden border-b border-line bg-band text-[0.8rem] text-muted lg:block">
+      <div className="hidden border-b border-line bg-band text-[0.8rem] text-muted xl:block">
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 lg:px-8">
           <p>Professional pest control across Alberta</p>
           <a
@@ -75,27 +86,34 @@ export function Header({ site }: { site?: SiteSettings }) {
           scrolled || menuOpen ? "shadow-soft" : ""
         }`}
       >
-        <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-3 px-3 md:h-[4.25rem] lg:px-6">
+        <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 overflow-hidden px-4 md:h-[4.25rem] lg:px-6">
           <Link href="/" aria-label="Home" className="shrink-0 rounded-md">
-            <Wordmark variant="dark" site={site} className="max-w-[10rem] sm:max-w-none" />
+            <Wordmark
+              variant="dark"
+              site={site}
+              className="max-w-[9.5rem] sm:max-w-[11rem]"
+            />
           </Link>
 
-          <nav aria-label="Main" className="hidden items-center lg:flex">
+          <nav
+            aria-label="Main"
+            className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 xl:flex"
+          >
             {primaryNav.map((item) =>
               "children" in item && item.children ? (
                 <div
                   key={item.href}
-                  className="relative"
+                  className="relative shrink-0"
                   onMouseEnter={() => setLocationsOpen(true)}
                   onMouseLeave={() => setLocationsOpen(false)}
                 >
                   <Link
                     href={item.href}
-                    className={`${linkClass(item.href)} inline-flex items-center gap-1`}
+                    className={`${linkClass(item.href)} inline-flex items-center gap-0.5`}
                     aria-expanded={locationsOpen}
                     aria-haspopup="true"
                   >
-                    {item.label}
+                    {navLabel(item.href, item.label)}
                     <ChevronDown
                       className={`h-3.5 w-3.5 transition-transform ${locationsOpen ? "rotate-180" : ""}`}
                       aria-hidden="true"
@@ -108,7 +126,7 @@ export function Header({ site }: { site?: SiteSettings }) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 6 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 z-50 min-w-[12rem] rounded-xl border border-line bg-surface py-2 shadow-soft"
+                        className="absolute top-full right-0 z-50 min-w-[12rem] rounded-xl border border-line bg-surface py-2 shadow-soft"
                       >
                         {item.children.map((child) => (
                           <Link
@@ -132,18 +150,21 @@ export function Header({ site }: { site?: SiteSettings }) {
                   key={item.href}
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={linkClass(item.href)}
+                  className={`${linkClass(item.href)} shrink-0`}
                 >
-                  {item.label}
+                  {navLabel(item.href, item.label)}
                 </Link>
               ),
             )}
-            <Link href="/contact" className="btn-primary ml-2 !px-4 !py-2 text-xs xl:!px-5 xl:text-sm">
-              Request a Free Quote
+            <Link
+              href="/contact"
+              className="btn-primary ml-3 shrink-0 !px-4 !py-2.5 text-sm whitespace-nowrap"
+            >
+              Get a Quote
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex shrink-0 items-center gap-2 xl:hidden">
             <a
               href={runtime.contact.phoneHref}
               aria-label={`Call ${runtime.contact.phone}`}
@@ -177,7 +198,7 @@ export function Header({ site }: { site?: SiteSettings }) {
           <motion.nav
             id="mobile-menu"
             aria-label="Mobile"
-            className="fixed inset-x-0 top-[4rem] bottom-0 z-40 overflow-y-auto border-t border-line bg-surface lg:hidden"
+            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-line bg-surface md:top-[4.25rem] xl:hidden"
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 32 }}
             animate={{ opacity: 1, x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 32 }}
