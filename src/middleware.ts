@@ -57,6 +57,7 @@ export async function middleware(request: NextRequest) {
   const isAdminPage = pathname.startsWith("/admin");
   const isAdminApi =
     pathname.startsWith("/api/admin") && pathname !== "/api/admin/login";
+  const isUploadApi = pathname === "/api/upload";
 
   if (isLoginPage && loggedIn) {
     return NextResponse.redirect(new URL("/admin", request.url));
@@ -66,7 +67,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
-  if (isAdminApi && !loggedIn) {
+  if ((isAdminApi || isUploadApi) && !loggedIn) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -74,5 +75,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*", "/api/upload"],
 };

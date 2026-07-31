@@ -5,7 +5,7 @@ export default async function FaqsPage() {
   const cms = await getCmsContent();
   return (
     <>
-      <section className="relative overflow-hidden bg-base-950 pt-32 pb-16 text-white md:pt-40">
+      <section className="relative overflow-hidden bg-base-900 pt-32 pb-16 text-white md:pt-40">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
           <h1 className="font-display text-4xl font-extrabold sm:text-5xl">
@@ -16,9 +16,9 @@ export default async function FaqsPage() {
           </p>
         </div>
       </section>
-      <section className="bg-base-900 py-14">
+      <section className="bg-band py-14">
         <div className="mx-auto max-w-4xl px-4 lg:px-8">
-          <Accordion items={cms.faqs} />
+          <Accordion items={cms.faqs} tone="light" />
         </div>
       </section>
     </>

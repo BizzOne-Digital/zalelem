@@ -1,13 +1,30 @@
 import type { MetadataRoute } from "next";
+import { locationLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.seo.siteUrl;
-  return [
-    { url: base, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/services`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/privacy`, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/terms`, changeFrequency: "yearly", priority: 0.2 },
+  const pages = [
+    { path: "", priority: 1 },
+    { path: "/about", priority: 0.85 },
+    { path: "/services", priority: 0.9 },
+    { path: "/commercial", priority: 0.9 },
+    { path: "/bed-bug-heat-treatment", priority: 0.9 },
+    { path: "/how-heat-treatment-works", priority: 0.85 },
+    { path: "/aprehend-bed-bugs", priority: 0.85 },
+    { path: "/pricing", priority: 0.9 },
+    { path: "/locations", priority: 0.9 },
+    ...locationLinks.map((l) => ({ path: l.href, priority: 0.9 })),
+    { path: "/diy-pest-control", priority: 0.8 },
+    { path: "/contact", priority: 0.9 },
+    { path: "/faqs", priority: 0.7 },
+    { path: "/privacy", priority: 0.2 },
+    { path: "/terms", priority: 0.2 },
   ];
+
+  return pages.map(({ path, priority }) => ({
+    url: `${base}${path}`,
+    changeFrequency: priority >= 0.7 ? ("monthly" as const) : ("yearly" as const),
+    priority,
+  }));
 }

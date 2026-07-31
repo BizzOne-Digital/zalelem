@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <section className="bg-base-950 pt-32 pb-20 md:pt-40">
+    <section className="bg-surface pt-32 pb-20 md:pt-40">
       <div className="mx-auto max-w-3xl px-4 lg:px-8">
-        <h1 className="heading-rule heading-rule-left font-display text-4xl font-extrabold tracking-tight text-white">
+        <h1 className="heading-rule heading-rule-left font-display text-4xl font-extrabold tracking-tight text-ink">
           Terms &amp; Conditions
         </h1>
-        <div className="mt-8 space-y-6 rounded-3xl border border-white/8 bg-base-800/60 p-8 leading-relaxed text-muted shadow-card sm:p-10">
+        <div className="mt-8 space-y-6 rounded-2xl border border-line bg-surface p-8 leading-relaxed text-muted shadow-card sm:p-10">
           <p>
             Website content is provided for general information about{" "}
             {siteConfig.business.name}&rsquo;s services. Service availability,
@@ -28,7 +28,7 @@ export default function TermsPage() {
             only. Offer eligibility and service terms may vary — contact us for
             details.
           </p>
-          <p className="rounded-xl bg-base-950/70 px-5 py-4 text-sm">
+          <p className="rounded-xl bg-band px-5 py-4 text-sm text-ink">
             This is a placeholder terms document. Complete terms tailored to
             the business should be reviewed and confirmed by the client before
             launch.
@@ -37,7 +37,7 @@ export default function TermsPage() {
             Questions? Contact us at{" "}
             <a
               href={siteConfig.contact.emailHref}
-              className="font-bold text-gold-500 underline"
+              className="font-bold text-green-700 underline"
             >
               {siteConfig.contact.email}
             </a>

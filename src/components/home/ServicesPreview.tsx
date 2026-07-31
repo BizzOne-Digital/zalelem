@@ -15,36 +15,36 @@ const icons: Record<string, typeof Bug> = {
 
 export function ServicesPreview() {
   return (
-    <section className="bg-base-900 bg-contours py-20 lg:py-24">
+    <section className="bg-band py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <Reveal className="text-center">
-          <p className="text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
-            Solutions for {siteConfig.location.city}&rsquo;s
+          <p className="text-xs font-bold tracking-[0.2em] text-green-700 uppercase">
+            Solutions for {siteConfig.location.city}
           </p>
-          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Most Common Pest Problems
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {primaryServices.map((service, i) => {
             const Icon = icons[service.slug] ?? Bug;
             return (
-              <Reveal key={service.slug} delay={i * 0.06}>
+              <Reveal key={service.slug} delay={i * 0.04}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="group flex h-full flex-col items-center rounded-2xl border border-white/8 bg-base-800/70 p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:bg-base-800"
+                  className="group flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-card transition hover:-translate-y-0.5 hover:border-green-600"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600/15 text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600/10 text-green-700 transition-colors group-hover:bg-green-600 group-hover:text-white">
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <h3 className="font-display mt-4 text-base leading-snug font-bold text-white">
+                  <h3 className="font-display mt-4 text-lg font-bold text-ink">
                     {service.name}
                   </h3>
-                  <p className="mt-2 flex-1 text-[0.8rem] leading-relaxed text-muted">
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
                     {service.cardDescription}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold tracking-wide text-gold-500 uppercase">
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-green-700">
                     Learn More
                     <ArrowRight
                       className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"

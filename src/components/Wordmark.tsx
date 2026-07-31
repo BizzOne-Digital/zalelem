@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ShieldCheck } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { resolveCmsImage } from "@/lib/cms-image";
 import type { SiteSettings } from "@/types/cms";
 
 /**
@@ -25,20 +26,20 @@ export function Wordmark({
   if (logoSrc) {
     return (
       <Image
-        src={logoSrc}
+        src={resolveCmsImage(logoSrc)}
         alt={businessName}
         width={180}
         height={48}
-        className={className}
+        className={`h-auto max-w-full ${className}`}
         priority
       />
     );
   }
 
-  const text = variant === "light" ? "text-white" : "text-base-950";
+  const text = variant === "light" ? "text-white" : "text-ink";
 
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
+    <span className={`inline-flex max-w-full items-center gap-2 ${className}`}>
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-green-600 text-white shadow-sm">
         <ShieldCheck className="h-5 w-5" aria-hidden="true" />
       </span>
@@ -46,7 +47,7 @@ export function Wordmark({
         <span className="block text-[1.05rem] font-extrabold tracking-wide">
           PEST&nbsp;WARRIORS
         </span>
-        <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-500">
+        <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-green-700">
           Pest Control &middot; {city}
         </span>
       </span>

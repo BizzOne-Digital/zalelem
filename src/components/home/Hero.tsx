@@ -30,15 +30,14 @@ export function Hero() {
           initial: { opacity: 0, y: 22 },
           animate: { opacity: 1, y: 0 },
           transition: {
-            duration: 0.6,
+            duration: 0.55,
             delay,
             ease: [0.21, 0.65, 0.36, 1] as const,
           },
         };
 
   return (
-    <section className="relative overflow-hidden bg-base-950 text-white">
-      {/* Full-bleed background photo — technician on the right */}
+    <section className="relative overflow-hidden bg-base-900 text-white">
       <div className="absolute inset-0">
         <Image
           src={siteConfig.images.hero.src}
@@ -48,127 +47,93 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-[72%_32%]"
         />
-        {/* Readability overlays: strong left fade, soft bottom fade */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-base-950 via-base-950/78 to-base-950/10"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-base-950/95 via-transparent to-base-950/45"
+          className="absolute inset-0 bg-gradient-to-r from-base-950/90 via-base-900/75 to-base-900/35"
           aria-hidden="true"
         />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-32 pb-8 md:pt-40 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.25fr_0.75fr]">
-          {/* Copy column */}
+      <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-12 md:pt-36 lg:px-8 lg:pb-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.25fr_0.75fr]">
           <div>
             <motion.p
               {...fadeUp(0.05)}
-              className="text-[0.72rem] font-bold tracking-[0.28em] text-gold-500/90 uppercase"
+              className="text-[0.72rem] font-bold tracking-[0.22em] text-green-400 uppercase"
             >
               {siteConfig.location.city}&rsquo;s Trusted Pest Control Experts
             </motion.p>
 
             <motion.h1
-              {...fadeUp(0.15)}
-              className="font-serif mt-5 max-w-xl text-4xl leading-[1.16] font-bold tracking-tight sm:text-5xl lg:text-[3.4rem]"
+              {...fadeUp(0.12)}
+              className="font-display mt-4 max-w-xl text-4xl leading-[1.15] font-extrabold tracking-tight sm:text-5xl"
             >
-              Secure Your{" "}
-              <span className="text-green-400 lg:block">
-                {siteConfig.location.city} Property
-              </span>{" "}
-              <span className="lg:block">with Safe, Proven</span>{" "}
-              <span className="lg:block">Pest Control</span>
+              Canada&apos;s Pest Control Experts — Serving{" "}
+              {siteConfig.location.city}
             </motion.h1>
 
             <motion.p
-              {...fadeUp(0.25)}
-              className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-white/70"
+              {...fadeUp(0.2)}
+              className="mt-5 max-w-lg text-base leading-relaxed text-white/80"
             >
               {siteConfig.hero.description}
             </motion.p>
 
             <motion.div
-              {...fadeUp(0.35)}
+              {...fadeUp(0.28)}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <Link
-                href="/contact"
-                className="group inline-flex items-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-base-950 shadow-gold transition-all hover:bg-gold-400"
-              >
+              <Link href="/contact" className="btn-primary">
                 {siteConfig.hero.primaryCta}
-                <ArrowRight
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <a
                 href={siteConfig.contact.phoneHref}
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 bg-base-950/35 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:border-gold-500 hover:text-gold-500"
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-white/35 px-7 py-3.5 text-sm font-bold text-white transition hover:border-green-400 hover:text-green-400"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
-                Call ({siteConfig.contact.phone.slice(0, 3)}){" "}
-                {siteConfig.contact.phone.slice(4)}
+                Call {siteConfig.contact.phone}
               </a>
             </motion.div>
           </div>
 
-          {/* Offer card — deep green glass, overlapping the technician */}
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+            initial={reduceMotion ? false : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.21, 0.65, 0.36, 1] }}
+            transition={{ duration: 0.55, delay: 0.3 }}
             className="justify-self-center lg:justify-self-end"
           >
-            <div className="relative w-64 rounded-2xl border border-green-500/30 bg-green-950/45 p-6 pt-8 text-center shadow-soft backdrop-blur-md sm:w-72">
-              {/* Gold pill overlapping the top edge */}
-              <p className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gold-500 px-4 py-1.5 text-[0.62rem] font-extrabold tracking-[0.16em] whitespace-nowrap text-base-950 uppercase shadow-gold">
+            <div className="relative w-64 rounded-2xl border border-white/15 bg-surface p-6 pt-8 text-center text-ink shadow-soft sm:w-72">
+              <p className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-md bg-green-600 px-4 py-1.5 text-[0.62rem] font-extrabold tracking-[0.14em] whitespace-nowrap text-white uppercase">
                 Limited Time Offer
               </p>
-              <p className="font-display mt-2 text-[2.6rem] leading-none font-extrabold text-white">
+              <p className="font-display mt-2 text-[2.6rem] leading-none font-extrabold text-green-700">
                 20% OFF
               </p>
-              <p className="mt-2 text-xs font-bold tracking-[0.22em] text-white/85 uppercase">
+              <p className="mt-2 text-xs font-bold tracking-[0.18em] text-muted uppercase">
                 For New Customers
               </p>
-              <Link
-                href="/contact"
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gold-500/50 bg-green-800/60 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-green-700/70"
-              >
+              <Link href="/contact" className="btn-primary mt-6 w-full !py-3 text-sm">
                 Claim My Offer
-                <ArrowRight
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-              <p className="mt-3 text-[0.68rem] text-white/45">
-                {siteConfig.offer.terms}
-              </p>
+              <p className="mt-3 text-[0.68rem] text-muted">{siteConfig.offer.terms}</p>
             </div>
           </motion.div>
         </div>
 
-        {/* Trust indicator row — dividers, no boxes */}
         <motion.ul
-          {...fadeUp(0.55)}
-          className="mt-16 grid grid-cols-2 gap-y-6 border-t border-white/12 pt-7 lg:grid-cols-4"
+          {...fadeUp(0.4)}
+          className="mt-14 grid grid-cols-1 gap-4 border-t border-white/15 pt-8 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {trustItems.map((item, i) => (
+          {trustItems.map((item) => (
             <li
               key={item.label}
-              className={`flex items-center justify-center gap-3 px-2 ${
-                i > 0 ? "lg:border-l lg:border-white/12" : ""
-              } ${i % 2 === 1 ? "border-l border-white/12 lg:border-l" : ""}`}
+              className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold-500/40 text-gold-500">
-                <item.icon
-                  className="h-4.5 w-4.5"
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-green-600/20 text-green-400">
+                <item.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
               </span>
-              <span className="text-[0.82rem] leading-snug font-semibold text-white/90">
+              <span className="text-sm leading-snug font-semibold text-white">
                 {item.label}
                 <br />
                 {item.label2}

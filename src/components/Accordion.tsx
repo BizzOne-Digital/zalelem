@@ -9,14 +9,15 @@ export type AccordionItem = { question: string; answer: string };
 /** Accessible FAQ accordion with proper button/region semantics. */
 export function Accordion({
   items,
+  tone = "light",
 }: {
   items: readonly AccordionItem[];
-  /** Kept for API compatibility; the site is dark-themed throughout. */
   tone?: "light" | "dark";
 }) {
   const [open, setOpen] = useState<number | null>(0);
   const baseId = useId();
   const reduceMotion = useReducedMotion();
+  const isLight = tone === "light";
 
   return (
     <div className="space-y-3">
@@ -29,9 +30,13 @@ export function Accordion({
           <div
             key={item.question}
             className={`overflow-hidden rounded-2xl border transition-colors ${
-              isOpen
-                ? "border-gold-500/35 bg-base-800/80"
-                : "border-white/8 bg-base-800/50"
+              isLight
+                ? isOpen
+                  ? "border-green-600/35 bg-band"
+                  : "border-line bg-surface"
+                : isOpen
+                  ? "border-gold-500/35 bg-base-800/80"
+                  : "border-white/8 bg-base-800/50"
             }`}
           >
             <h3>
@@ -41,12 +46,18 @@ export function Accordion({
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-white sm:px-6"
+                className={`flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-semibold sm:px-6 ${
+                  isLight ? "text-ink" : "text-white"
+                }`}
               >
                 {item.question}
                 <ChevronDown
                   className={`h-5 w-5 shrink-0 transition-transform duration-300 ${
-                    isOpen ? "rotate-180 text-gold-500" : "text-muted"
+                    isOpen
+                      ? isLight
+                        ? "rotate-180 text-green-700"
+                        : "rotate-180 text-gold-500"
+                      : "text-muted"
                   }`}
                   aria-hidden="true"
                 />

@@ -1,32 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette — dark cinematic theme */
-  --color-base-950: #04101c;
-  --color-base-900: #061826;
-  --color-base-800: #0a2133;
-  --color-base-700: #10293d;
-  --color-navy-950: #04101c;
-  --color-navy-900: #082a4a;
-  --color-navy-800: #0d3a63;
-  --color-green-700: #1b6b3a;
-  --color-green-600: #23864a;
-  --color-green-500: #2f9c5b;
-  --color-green-400: #4db97a;
-  --color-gold-500: #f4c542;
-  --color-gold-400: #f8d46b;
-  --color-gold-600: #d9a716;
-  --color-ink: #eaf2f7;
-  --color-muted: #8fa3ad;
+  /* Brand palette — light corporate (Ecopest-inspired) */
+  --color-base-950: #0b1f17;
+  --color-base-900: #123026;
+  --color-base-800: #1a3d30;
+  --color-base-700: #245240;
+  --color-navy-950: #0b1f17;
+  --color-navy-900: #123026;
+  --color-navy-800: #1a3d30;
+  --color-green-700: #166534;
+  --color-green-600: #15803d;
+  --color-green-500: #16a34a;
+  --color-green-400: #4ade80;
+  --color-gold-500: #eab308;
+  --color-gold-400: #facc15;
+  --color-gold-600: #ca8a04;
+  --color-ink: #14241c;
+  --color-muted: #5b6f64;
+  --color-surface: #ffffff;
+  --color-band: #f3f6f4;
+  --color-line: #d8e3dc;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif,
     system-ui, sans-serif;
   --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
 
-  --shadow-soft: 0 16px 48px -16px rgb(0 0 0 / 0.6);
-  --shadow-card: 0 8px 28px -10px rgb(0 0 0 / 0.5);
-  --shadow-gold: 0 8px 28px -10px rgb(244 197 66 / 0.35);
+  --shadow-soft: 0 16px 40px -18px rgb(11 31 23 / 0.18);
+  --shadow-card: 0 8px 24px -12px rgb(11 31 23 / 0.14);
+  --shadow-gold: 0 8px 24px -10px rgb(22 163 74 / 0.35);
 }
 
 html {
@@ -40,50 +43,56 @@ html {
 }
 
 body {
-  background: var(--color-base-950);
+  background: var(--color-surface);
   color: var(--color-ink);
   font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-gold-500);
-  color: var(--color-base-950);
+  background: var(--color-green-500);
+  color: white;
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-gold-500);
+  outline: 3px solid var(--color-green-500);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Intro overlay: hidden before hydration for returning/reduced-motion visitors */
-html[data-intro-done] #intro-loader {
-  display: none;
+/* Intro overlay: hidden (disabled for corporate first paint) */
+html[data-intro-done] #intro-loader,
+#intro-loader {
+  display: none !important;
 }
 
-/* Subtle blueprint grid on dark sections */
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-band {
+  background-color: var(--color-band);
+}
+
 .bg-grid-dark {
   background-image: linear-gradient(
-      rgb(255 255 255 / 0.035) 1px,
+      rgb(11 31 23 / 0.04) 1px,
       transparent 1px
     ),
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    linear-gradient(90deg, rgb(11 31 23 / 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Fine contour texture */
 .bg-contours {
   background-image: repeating-radial-gradient(
     circle at 85% 15%,
     transparent 0,
     transparent 56px,
-    rgb(47 156 91 / 0.05) 57px,
+    rgb(22 163 74 / 0.05) 57px,
     transparent 58px
   );
 }
 
-/* Gold underline accent beneath section headings */
 .heading-rule {
   position: relative;
   display: inline-block;
@@ -102,8 +111,8 @@ html[data-intro-done] #intro-loader {
   background: linear-gradient(
     90deg,
     transparent,
-    var(--color-gold-500) 25%,
-    var(--color-gold-500) 75%,
+    var(--color-green-600) 25%,
+    var(--color-green-600) 75%,
     transparent
   );
 }
@@ -113,13 +122,12 @@ html[data-intro-done] #intro-loader {
   transform: none;
   background: linear-gradient(
     90deg,
-    var(--color-gold-500) 0%,
-    var(--color-gold-500) 70%,
+    var(--color-green-600) 0%,
+    var(--color-green-600) 70%,
     transparent
   );
 }
 
-/* Scanning line inside the hero */
 @keyframes hero-scan {
   0%,
   100% {
@@ -136,14 +144,8 @@ html[data-intro-done] #intro-loader {
 }
 
 .animate-hero-scan {
-  animation: hero-scan 7s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-hero-scan {
-    animation: none;
-    opacity: 0;
-  }
+  animation: none;
+  opacity: 0;
 }
 
 @keyframes gentle-float {
@@ -166,18 +168,54 @@ html[data-intro-done] #intro-loader {
   }
 }
 
-/* City skyline silhouette (pure CSS, no image) */
 .bg-skyline {
   background-image: linear-gradient(
       to top,
-      rgb(4 16 28 / 0.92) 0%,
+      rgb(243 246 244 / 0.95) 0%,
       transparent 45%
     ),
     repeating-linear-gradient(
       90deg,
-      rgb(255 255 255 / 0.028) 0 42px,
-      rgb(255 255 255 / 0.05) 42px 74px,
-      rgb(255 255 255 / 0.02) 74px 128px,
-      rgb(255 255 255 / 0.055) 128px 156px
+      rgb(11 31 23 / 0.03) 0 42px,
+      rgb(11 31 23 / 0.05) 42px 74px,
+      rgb(11 31 23 / 0.02) 74px 128px,
+      rgb(11 31 23 / 0.055) 128px 156px
     );
+}
+
+/* Primary / secondary button helpers */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-green-600);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: var(--shadow-gold);
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-green-700);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-line);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-green-600);
+  color: var(--color-green-700);
 }

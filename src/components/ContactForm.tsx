@@ -19,7 +19,7 @@ import { siteConfig } from "@/config/site";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-xl border border-white/12 bg-base-950/70 px-4 py-3 text-[0.95rem] text-white placeholder:text-muted/60 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/25 aria-[invalid=true]:border-red-400 [&>option]:bg-base-950 [&>option]:text-white";
+  "w-full rounded-xl border border-line bg-surface px-4 py-3 text-[0.95rem] text-ink placeholder:text-muted/60 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/25 aria-[invalid=true]:border-red-500";
 
 function Field({
   label,
@@ -38,11 +38,11 @@ function Field({
     <div>
       <label
         htmlFor={htmlFor}
-        className="mb-1.5 block text-sm font-bold text-white"
+        className="mb-1.5 block text-sm font-bold text-ink"
       >
         {label}
         {required && (
-          <span className="text-gold-500" aria-hidden="true">
+          <span className="text-green-700" aria-hidden="true">
             {" "}
             *
           </span>
@@ -53,7 +53,7 @@ function Field({
         <p
           id={`${htmlFor}-error`}
           role="alert"
-          className="mt-1.5 text-sm font-medium text-red-400"
+          className="mt-1.5 text-sm font-medium text-red-600"
         >
           {error}
         </p>
@@ -129,12 +129,12 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="rounded-2xl border border-green-500/30 bg-green-700/10 p-8 text-center sm:p-12"
+        className="rounded-2xl border border-green-600/30 bg-band p-8 text-center sm:p-12"
       >
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-600 text-white">
           <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
         </span>
-        <h3 className="font-display mt-5 text-2xl font-extrabold text-white">
+        <h3 className="font-display mt-5 text-2xl font-extrabold text-ink">
           Request Received
         </h3>
         <p className="mx-auto mt-3 max-w-md text-muted">
@@ -143,7 +143,7 @@ export function ContactForm() {
           call us at{" "}
           <a
             href={siteConfig.contact.phoneHref}
-            className="font-bold text-gold-500 underline"
+            className="font-bold text-green-700 underline"
           >
             {siteConfig.contact.phone}
           </a>
@@ -281,7 +281,7 @@ export function ContactForm() {
           {serviceTypeOptions.map((option) => (
             <label
               key={option}
-              className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/12 bg-base-950/70 px-4 py-3 text-sm font-bold text-white transition-colors has-checked:border-gold-500 has-checked:bg-gold-500/10 has-checked:text-gold-400"
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm font-bold text-ink transition-colors has-checked:border-green-600 has-checked:bg-band has-checked:text-green-700"
             >
               <input
                 type="radio"
@@ -384,7 +384,7 @@ export function ContactForm() {
           id="photo"
           name="photo"
           accept="image/jpeg,image/png,image/webp,image/heic"
-          className="w-full rounded-xl border border-dashed border-white/20 bg-base-950/70 px-4 py-3 text-sm text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-green-600/20 file:px-4 file:py-2 file:text-sm file:font-bold file:text-green-400"
+          className="w-full rounded-xl border border-dashed border-line bg-surface px-4 py-3 text-sm text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-green-600/10 file:px-4 file:py-2 file:text-sm file:font-bold file:text-green-700"
         />
         <p className="mt-1.5 text-xs text-muted">
           A photo of the pest or affected area helps us assess faster. Max 5 MB.
@@ -403,14 +403,14 @@ export function ContactForm() {
           <span className="text-sm text-muted">
             I agree to be contacted by {siteConfig.business.name} about my
             request using the details provided above.
-            <span className="text-gold-500" aria-hidden="true">
+            <span className="text-green-700" aria-hidden="true">
               {" "}
               *
             </span>
           </span>
         </label>
         {errors.consent && (
-          <p role="alert" className="mt-1.5 text-sm font-medium text-red-400">
+          <p role="alert" className="mt-1.5 text-sm font-medium text-red-600">
             {errors.consent}
           </p>
         )}
@@ -419,7 +419,7 @@ export function ContactForm() {
       {serverError && (
         <div
           role="alert"
-          className="flex items-start gap-3 rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-300"
+          className="flex items-start gap-3 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
         >
           <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           {serverError}
@@ -429,7 +429,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-8 py-4 text-base font-bold text-base-950 shadow-gold transition-all hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {status === "submitting" ? (
           <>

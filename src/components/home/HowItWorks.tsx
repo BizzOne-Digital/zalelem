@@ -48,27 +48,24 @@ export function HowItWorks() {
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section className="bg-base-900 py-20 lg:py-24">
+    <section className="bg-band py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <Reveal className="text-center">
-          <p className="text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
+          <p className="text-xs font-bold tracking-[0.2em] text-green-700 uppercase">
             How It Works
           </p>
-          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Our Simple 4-Step Process
           </h2>
         </Reveal>
 
         <div ref={ref} className="relative mt-14">
-          {/* Connector line — animates with scroll */}
           <div
-            className="absolute top-6 bottom-6 left-[1.4rem] w-0.5 bg-white/10 lg:top-[1.4rem] lg:right-10 lg:bottom-auto lg:left-10 lg:h-0.5 lg:w-auto"
+            className="absolute top-6 bottom-6 left-[1.4rem] w-0.5 bg-line lg:top-[1.4rem] lg:right-10 lg:bottom-auto lg:left-10 lg:h-0.5 lg:w-auto"
             aria-hidden="true"
           >
-            {/* Vertical on mobile, horizontal on desktop — scaling both axes
-                keeps the visible axis animated in either layout. */}
             <motion.div
-              className="h-full w-full origin-top bg-gold-500 lg:origin-left"
+              className="h-full w-full origin-top bg-green-600 lg:origin-left"
               style={
                 reduceMotion
                   ? { scaleY: 1, scaleX: 1 }
@@ -79,21 +76,21 @@ export function HowItWorks() {
 
           <ol className="relative grid gap-10 lg:grid-cols-4 lg:gap-6">
             {steps.map((step, i) => (
-              <Reveal key={step.title} as="li" delay={i * 0.1}>
+              <Reveal key={step.title} as="li" delay={i * 0.08}>
                 <div className="flex gap-5 lg:flex-col">
-                  <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500 text-base-950 ring-4 ring-base-900">
+                  <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-600 text-white ring-4 ring-band">
                     <span className="font-display text-sm font-extrabold">
                       {i + 1}
                     </span>
                   </div>
                   <div className="lg:mt-5">
-                    <span className="mb-3 hidden h-11 w-11 items-center justify-center rounded-xl bg-green-600/15 text-green-400 lg:flex">
+                    <span className="mb-3 hidden h-11 w-11 items-center justify-center rounded-xl bg-green-600/10 text-green-700 lg:flex">
                       <step.icon className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <h3 className="font-display text-lg font-bold text-white">
+                    <h3 className="font-display text-lg font-bold text-ink">
                       {step.title}
                     </h3>
-                    <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
                       {step.text}
                     </p>
                   </div>

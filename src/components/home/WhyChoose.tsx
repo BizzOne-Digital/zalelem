@@ -44,49 +44,41 @@ const reasons = [
 
 export function WhyChoose() {
   return (
-    <section className="relative overflow-hidden bg-base-950 py-20 lg:py-24">
-      <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
-      <div
-        className="absolute top-0 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-green-600/10 blur-[110px]"
-        aria-hidden="true"
-      />
-
-      <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
+    <section className="bg-surface py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <Reveal className="text-center">
-          <p className="text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
+          <p className="text-xs font-bold tracking-[0.2em] text-green-700 uppercase">
             Why Choose Pest Warriors
           </p>
-          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="heading-rule font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Smart Solutions. Lasting Protection.
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, i) => (
-            <Reveal key={reason.title} delay={i * 0.06}>
-              <div className="group flex h-full flex-col items-center rounded-2xl border border-white/8 bg-base-800/60 p-7 text-center transition-colors hover:border-gold-500/40 hover:bg-base-800">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600/15 text-green-400 transition-colors group-hover:bg-green-600 group-hover:text-white">
+            <Reveal key={reason.title} delay={i * 0.04}>
+              <div className="group flex h-full flex-col rounded-2xl border border-line bg-band p-7 transition-colors hover:border-green-600 hover:bg-surface">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600/10 text-green-700 transition-colors group-hover:bg-green-600 group-hover:text-white">
                   <reason.icon className="h-6 w-6" aria-hidden="true" />
                 </span>
-                <h3 className="font-display mt-5 text-lg font-bold text-white">
+                <h3 className="font-display mt-5 text-lg font-bold text-ink">
                   {reason.title}
                 </h3>
-                <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
-                  {reason.text}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{reason.text}</p>
               </div>
             </Reveal>
           ))}
         </div>
 
-        {siteConfig.guarantee.enabled && (
+        {siteConfig.guarantee.enabled ? (
           <Reveal className="mt-10">
-            <p className="mx-auto max-w-3xl rounded-2xl border border-gold-500/25 bg-gold-500/[0.06] px-6 py-4 text-center text-sm text-white/70">
-              <span className="font-bold text-gold-400">Our warranty: </span>
+            <p className="mx-auto max-w-3xl rounded-2xl border border-green-600/25 bg-green-600/5 px-6 py-4 text-center text-sm text-muted">
+              <span className="font-bold text-green-700">Our warranty: </span>
               {siteConfig.guarantee.text}
             </p>
           </Reveal>
-        )}
+        ) : null}
       </div>
     </section>
   );

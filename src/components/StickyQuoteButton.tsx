@@ -17,17 +17,15 @@ export function StickyQuoteButton() {
 
   return (
     <div
-      className={`fixed inset-x-4 bottom-4 z-40 transition-all duration-300 md:hidden ${
+      className={`fixed inset-x-4 z-40 transition-all duration-300 md:hidden ${
         visible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-6 opacity-0"
       }`}
+      style={{ bottom: "max(1rem, env(safe-area-inset-bottom))" }}
     >
-      <Link
-        href="/contact"
-        className="flex items-center justify-center gap-2 rounded-full bg-gold-500 px-6 py-4 text-base font-bold text-base-950 shadow-[0_10px_32px_-8px_rgb(244_197_66/0.5)]"
-      >
-        Request a Quote
+      <Link href="/contact" className="btn-primary w-full shadow-soft">
+        Request a Free Quote
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </div>
