@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — Pest Warriors screenshot match */
+  --color-base-950: #062819;
+  --color-base-900: #0a3321;
+  --color-base-800: #0f3d28;
+  --color-base-700: #164f34;
+  --color-navy-950: #062819;
+  --color-navy-900: #0a3321;
+  --color-navy-800: #0f3d28;
+  --color-green-700: #0f6b3a;
+  --color-green-600: #1a8f4c;
+  --color-green-500: #22a855;
+  --color-green-400: #8fd14a;
+  --color-lime-500: #8bc53f;
+  --color-lime-400: #a4d44a;
+  --color-gold-500: #f5c518;
+  --color-gold-400: #ffd23a;
+  --color-gold-600: #e0b000;
+  --color-ink: #0a3321;
+  --color-muted: #5a6e63;
+  --color-surface: #ffffff;
+  --color-band: #f4f7f5;
+  --color-line: #d5e2d9;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+
+  --shadow-soft: 0 16px 40px -18px rgb(6 40 25 / 0.2);
+  --shadow-card: 0 8px 24px -12px rgb(6 40 25 / 0.12);
+  --shadow-gold: 0 8px 24px -10px rgb(245 197 24 / 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-green-500);
+  color: white;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-green-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Intro overlay: hidden (disabled for corporate first paint) */
+html[data-intro-done] #intro-loader,
+#intro-loader {
+  display: none !important;
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-band {
+  background-color: var(--color-band);
+}
+
+.bg-grid-dark {
+  background-image: linear-gradient(
+      rgb(6 40 25 / 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgb(6 40 25 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-contours {
+  background-image: repeating-radial-gradient(
+    circle at 85% 15%,
+    transparent 0,
+    transparent 56px,
+    rgb(139 197 63 / 0.06) 57px,
+    transparent 58px
+  );
+}
+
+.heading-rule {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.85rem;
+}
+
+.heading-rule::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 72px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-lime-500) 25%,
+    var(--color-lime-500) 75%,
+    transparent
+  );
+}
+
+.heading-rule-left::after {
+  left: 0;
+  transform: none;
+  background: linear-gradient(
+    90deg,
+    var(--color-lime-500) 0%,
+    var(--color-lime-500) 70%,
+    transparent
+  );
+}
+
+@keyframes hero-scan {
+  0%,
+  100% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(420%);
+  }
+}
+
+.animate-hero-scan {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes gentle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gentle-float {
+    animation: none;
+  }
+}
+
+.bg-skyline {
+  background-image: linear-gradient(
+      to top,
+      rgb(244 247 245 / 0.96) 0%,
+      transparent 45%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(6 40 25 / 0.03) 0 42px,
+      rgb(6 40 25 / 0.05) 42px 74px,
+      rgb(6 40 25 / 0.02) 74px 128px,
+      rgb(6 40 25 / 0.055) 128px 156px
+    );
+}
+
+/* Gold CTA — header / claim offer */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-gold-500);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: #0a3321;
+  box-shadow: var(--shadow-gold);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-gold-400);
+}
+
+/* Lime / green CTA — hero & about */
+.btn-lime {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-lime-500);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: #062819;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-lime:hover {
+  background: var(--color-lime-400);
+}
+
+.btn-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-base-800);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: white;
+  transition: background-color 0.15s ease;
+}
+
+.btn-green:hover {
+  background: var(--color-base-700);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-line);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-green-600);
+  color: var(--color-green-700);
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-lime-500);
+}
