@@ -51,6 +51,29 @@ body {
   overflow-x: clip;
 }
 
+:root {
+  --header-h: 4rem;
+  --header-offset: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+  --sticky-quote-space: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 4.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    /* utility bar (2.5rem) + nav */
+    --header-offset: calc(2.5rem + 4.25rem);
+  }
+}
+
+.scroll-anchor {
+  scroll-margin-top: calc(var(--header-offset) + 0.75rem);
+}
+
 ::selection {
   background: var(--color-green-500);
   color: white;
@@ -194,6 +217,7 @@ html[data-intro-done] #intro-loader,
   border-radius: 0.5rem;
   background: var(--color-gold-500);
   padding: 0.875rem 1.75rem;
+  min-height: 2.75rem;
   font-weight: 700;
   color: #0a3321;
   box-shadow: var(--shadow-gold);
@@ -213,6 +237,7 @@ html[data-intro-done] #intro-loader,
   border-radius: 0.5rem;
   background: var(--color-lime-500);
   padding: 0.875rem 1.75rem;
+  min-height: 2.75rem;
   font-weight: 700;
   color: #062819;
   transition: background-color 0.15s ease, transform 0.15s ease;
@@ -230,6 +255,7 @@ html[data-intro-done] #intro-loader,
   border-radius: 0.5rem;
   background: var(--color-base-800);
   padding: 0.875rem 1.75rem;
+  min-height: 2.75rem;
   font-weight: 700;
   color: white;
   transition: background-color 0.15s ease;
@@ -247,6 +273,7 @@ html[data-intro-done] #intro-loader,
   border-radius: 0.5rem;
   border: 2px solid var(--color-line);
   padding: 0.875rem 1.75rem;
+  min-height: 2.75rem;
   font-weight: 700;
   color: var(--color-ink);
   transition: border-color 0.15s ease, color 0.15s ease;

@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
 import { BedBugHeatPageContent } from "@/components/bed-bug-heat/BedBugHeatPageContent";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title:
-    "Professional Bed Bug Heat Treatment Services in Calgary & Edmonton | Ecoheat",
-  description:
-    "Eco-Friendly Thermal Remediation for Absolute Pest Elimination. Chemical-free bed bug heat treatment serving Calgary, Edmonton, and surrounding areas.",
-  alternates: { canonical: "/bed-bug-heat-treatment" },
-  openGraph: {
-    title: "Professional Bed Bug Heat Treatment in Calgary & Edmonton",
-    description:
-      "Chemical-free thermal remediation that eliminates bed bugs in a single treatment. Serving Calgary, Edmonton, and surrounding communities.",
-    url: "/bed-bug-heat-treatment",
-    type: "website",
-    images: [{ url: "/images/bed-bug-heat-hero.png" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "bed-bug-heat-treatment");
+  return {
+    title: page?.title ?? "Bed Bug Heat Treatment",
+    description: page?.description ?? "",
+    alternates: { canonical: "/bed-bug-heat-treatment" },
+  };
+}
 
-export default function BedBugHeatTreatmentPage() {
-  return <BedBugHeatPageContent />;
+export default async function BedBugHeatTreatmentPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "bed-bug-heat-treatment");
+  return (
+    <BedBugHeatPageContent
+      page={page}
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      heroImage={page?.heroImage}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

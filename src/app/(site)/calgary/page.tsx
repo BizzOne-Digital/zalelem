@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { CalgaryPageContent } from "@/components/locations/CalgaryPageContent";
-import { getCmsContent } from "@/lib/cms";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
 export async function generateMetadata(): Promise<Metadata> {
   const cms = await getCmsContent();
-  const page = cms.pages.find((item) => item.slug === "calgary");
+  const page = getCmsPage(cms.pages, "calgary");
   return {
     title: page?.title ?? "EcoHeat Pest Control Calgary | Eco-Friendly Pest Control",
     description:
@@ -14,6 +14,15 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function CalgaryPage() {
-  return <CalgaryPageContent />;
+export default async function CalgaryPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "calgary");
+  return (
+    <CalgaryPageContent
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

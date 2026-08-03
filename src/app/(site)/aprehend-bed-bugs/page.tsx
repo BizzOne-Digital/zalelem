@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
 import { AprehendPageContent } from "@/components/aprehend/AprehendPageContent";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Aprehend® Bed Bug Treatment | Professional Biological Pest Control",
-  description:
-    "Aprehend® bed bug treatment for Greater Calgary and Edmonton — a modern biological biopesticide using Beauveria bassiana for long-term, non-toxic colony elimination with up to 3 months of protection.",
-  alternates: { canonical: "/aprehend-bed-bugs" },
-  openGraph: {
-    title: "Aprehend® Bed Bug Treatment | Biological Pest Control",
-    description:
-      "Modern biological bed bug treatment that transfers through the colony. Chemical-free peace of mind with up to 90 days of continuous protection.",
-    url: "/aprehend-bed-bugs",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "aprehend-bed-bugs");
+  return {
+    title: page?.title ?? "Aprehend® Bed Bug Treatment",
+    description: page?.description ?? "",
+    alternates: { canonical: "/aprehend-bed-bugs" },
+  };
+}
 
-export default function AprehendBedBugsPage() {
-  return <AprehendPageContent />;
+export default async function AprehendBedBugsPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "aprehend-bed-bugs");
+  return (
+    <AprehendPageContent
+      page={page}
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      heroImage={page?.heroImage}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

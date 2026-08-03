@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 /**
  * Scroll-reveal wrapper: gentle fade + rise when the element enters the
  * viewport. Renders content statically when reduced motion is preferred.
+ * Content stays visible without JS (no opacity:0 on first paint).
  */
 export function Reveal({
   children,
@@ -29,10 +30,10 @@ export function Reveal({
   return (
     <Component
       className={className}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 1, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-64px" }}
-      transition={{ duration: 0.55, delay, ease: [0.21, 0.65, 0.36, 1] }}
+      viewport={{ once: true, margin: "-48px" }}
+      transition={{ duration: 0.5, delay, ease: [0.21, 0.65, 0.36, 1] }}
     >
       {children}
     </Component>

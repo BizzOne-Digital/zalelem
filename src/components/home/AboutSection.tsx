@@ -17,7 +17,7 @@ export function AboutSection() {
   const stat = siteConfig.stats.treatmentsCompleted;
 
   return (
-    <section id="about" className="scroll-mt-24 bg-surface py-16 lg:py-20">
+    <section id="about" className="scroll-anchor bg-surface py-16 lg:py-20">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <Reveal>
           <div className="relative pr-4 pb-8 sm:pr-8">
@@ -30,11 +30,11 @@ export function AboutSection() {
                 className="object-cover"
               />
             </div>
-            <div className="absolute bottom-0 left-0 flex max-w-[85%] items-center gap-3 rounded-xl bg-surface px-3 py-3 shadow-soft sm:max-w-none sm:px-5 sm:py-4">
-              <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-lime-500/15 text-lime-500">
+            <div className="absolute bottom-0 left-0 flex max-w-[min(85%,16rem)] items-center gap-3 rounded-xl bg-surface px-3 py-3 shadow-soft sm:max-w-none sm:px-5 sm:py-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-lime-500/15 text-lime-500">
                 <ShieldCheck className="h-6 w-6" aria-hidden="true" />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-extrabold text-ink">Focused on</span>
                 <span className="block text-sm font-bold text-green-700">
                   Safety &amp; Results
@@ -42,11 +42,11 @@ export function AboutSection() {
               </span>
             </div>
             {stat.enabled ? (
-              <div className="absolute top-4 right-2 rounded-xl border border-line bg-surface px-5 py-3 shadow-soft sm:right-4">
-                <p className="font-display text-xl font-extrabold text-green-700">
+              <div className="absolute top-4 right-2 max-w-[45%] truncate rounded-xl border border-line bg-surface px-3 py-2 shadow-soft sm:right-4 sm:max-w-none sm:px-5 sm:py-3">
+                <p className="font-display text-lg font-extrabold text-green-700 sm:text-xl">
                   {stat.value}
                 </p>
-                <p className="text-xs text-muted">{stat.label}</p>
+                <p className="truncate text-xs text-muted">{stat.label}</p>
               </div>
             ) : null}
           </div>
@@ -91,7 +91,7 @@ export function AboutSection() {
           </ul>
 
           <Reveal delay={0.15}>
-            <Link href="/contact" className="btn-green mt-9">
+            <Link href="/contact" className="btn-green mt-9 w-full sm:w-auto">
               Get a Free Quote
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>

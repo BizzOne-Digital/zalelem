@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 /** Sector circle images in /public/images/commercial/sectors/ */
 const sectorImages: Record<string, string> = {
@@ -228,9 +229,15 @@ function AlbertaMap() {
   );
 }
 
-export function CommercialPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function CommercialPageContent(props: CmsHeroProps = {}) {
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
+  const hero = pickHero(props, {
+    title: "Commercial Pest Control Alberta",
+    description:
+      "EcoHeat Pest Control provides expert commercial pest control and industrial pest management programs across Alberta. We specialize in serving Edmonton, Calgary, Lethbridge, Red Deer, Fort McMurray, and all surrounding areas.",
+    image: "/images/commercial-hero.png",
+  });
 
   return (
     <>
@@ -238,7 +245,7 @@ export function CommercialPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/commercial-hero.png"
+            src={hero.image || "/images/commercial-hero.png"}
             alt="Commercial pest control technicians inspecting a facility at dusk"
             fill
             priority
@@ -251,20 +258,23 @@ export function CommercialPageContent() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 md:pt-36 lg:px-8 lg:pb-20 xl:pt-44">
+        <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-16 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-20">
           <Reveal>
             <p className="text-[0.72rem] font-bold tracking-[0.22em] text-lime-400 uppercase">
               Commercial &amp; Industrial Solutions
             </p>
             <h1 className="font-display mt-4 max-w-2xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-[3.1rem]">
-              Commercial Pest Control{" "}
-              <span className="text-lime-400">Alberta</span>
+              {props.heroTitle ? (
+                hero.title
+              ) : (
+                <>
+                  Commercial Pest Control{" "}
+                  <span className="text-lime-400">Alberta</span>
+                </>
+              )}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-              EcoHeat Pest Control provides expert commercial pest control and
-              industrial pest management programs across Alberta. We specialize
-              in serving Edmonton, Calgary, Lethbridge, Red Deer, Fort McMurray,
-              and all surrounding areas.
+              {hero.description}
             </p>
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/contact" className="btn-lime w-full sm:w-auto">
@@ -313,7 +323,7 @@ export function CommercialPageContent() {
             </p>
           </Reveal>
 
-          <ul className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
+          <ul className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-7">
             {sectors.map((sector, i) => (
               <Reveal key={sector} as="li" delay={i * 0.03}>
                 <div className="flex flex-col items-center text-center">

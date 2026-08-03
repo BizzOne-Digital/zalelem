@@ -1,6 +1,34 @@
 import { homeFaqs, primaryServices } from "@/config/services";
 import { siteConfig } from "@/config/site";
+import { defaultPricingContent } from "@/lib/default-pricing";
 import type { CmsContent, EditablePage } from "@/types/cms";
+
+const servicePrices: Record<string, { priceRange: string; pricingNote: string }> = {
+  "bed-bug-control": {
+    priceRange: "$350 – $1,500+",
+    pricingNote: "Depends on treatment type & property size",
+  },
+  "carpenter-ant-control": {
+    priceRange: "$150 – $260+",
+    pricingNote: "Size & Property Dependent",
+  },
+  "wasp-nest-removal": {
+    priceRange: "$90 – $250+",
+    pricingNote: "Infestation Dependent",
+  },
+  "mice-rodent-control": {
+    priceRange: "$90 – $250+",
+    pricingNote: "Size & Property Dependent",
+  },
+  "cockroach-control": {
+    priceRange: "$152 – $230+",
+    pricingNote: "Size & Property Dependent",
+  },
+  "spider-control": {
+    priceRange: "Quote on inspection",
+    pricingNote: "Property Dependent",
+  },
+};
 
 const detailPages: EditablePage[] = [
   {
@@ -555,6 +583,9 @@ const detailPages: EditablePage[] = [
   },
   {
     slug: "calgary",
+    kind: "location",
+    cityLabel: "Calgary",
+    published: true,
     title: "EcoHeat Pest Control Calgary | Eco-Friendly Pest Control",
     description:
       "EcoHeat Pest Control Calgary is your trusted choice for professional, reliable, and eco-friendly pest control in Calgary and surrounding communities. Specialists in IPM and 100% chemical-free bed bug heat treatments.",
@@ -619,12 +650,10 @@ const detailPages: EditablePage[] = [
         id: "communities",
         title: "Calgary & Surrounding Commuter Communities",
         content:
-          "We proudly provide industry-leading pest control and 100% effective bed bug heat treatments throughout Calgary and all surrounding commuter communities. Whether you manage a commercial warehouse in Balzac, live on a sprawling acreage in Springbank or Bearspaw, or run a household in Airdrie, Cochrane, Chestermere, or Okotoks, our local technicians are just a phone call away.",
+          "We proudly provide industry-leading pest control and 100% effective bed bug heat treatments throughout Calgary and all surrounding commuter communities. Whether you manage a commercial warehouse in Balzac, live on a sprawling acreage in Springbank or Bearspaw, or run a household in Cochrane, Okotoks, or nearby communities, our local technicians are just a phone call away.",
         image: "/images/pest-warriors-service-map.webp",
         bullets: [
-          "Airdrie: Proactive pest elimination and thermal bed bug removal for north Calgary's largest commuter city.",
           "Cochrane: Specialized residential and commercial pest management along the scenic Bow River valley.",
-          "Chestermere: Effective spider, rodent, and thermal bed bug solutions for lakefront and residential properties.",
           "Okotoks: Premium, eco-friendly pest control servicing families and businesses across the Sheep River region.",
           "Strathmore: Comprehensive structural pest control and extermination services customized for eastern communities.",
           "High River: Trusted wildlife management, rodent control, and thermal bed bug eradication solutions.",
@@ -643,6 +672,9 @@ const detailPages: EditablePage[] = [
   },
   {
     slug: "edmonton",
+    kind: "location",
+    cityLabel: "Edmonton",
+    published: true,
     title:
       "Edmonton Pest Control | Chemical-Free Heat Treatment | Ecoheat",
     description:
@@ -703,6 +735,9 @@ const detailPages: EditablePage[] = [
   },
   {
     slug: "lethbridge",
+    kind: "location",
+    cityLabel: "Lethbridge",
+    published: true,
     title: "Eco-Friendly Pest Control & Extermination in Lethbridge | Ecoheat",
     description:
       "Welcome to Ecoheat Pest Control, your trusted local choice for safe, reliable, and affordable extermination services in Lethbridge and surrounding areas. Eco-friendly IPM, bed bug heat treatments, and discreet service.",
@@ -791,6 +826,9 @@ const detailPages: EditablePage[] = [
   },
   {
     slug: "red-deer",
+    kind: "location",
+    cityLabel: "Red Deer",
+    published: true,
     title: "Eco-Friendly Pest Control & Extermination in Red Deer | Ecoheat",
     description:
       "Welcome to Ecoheat Pest Control, Red Deer’s premier choice for safe, effective, and affordable pest management. Eco-friendly residential and commercial extermination across Red Deer and surrounding communities.",
@@ -862,6 +900,9 @@ const detailPages: EditablePage[] = [
   },
   {
     slug: "fort-mcmurray",
+    kind: "location",
+    cityLabel: "Fort McMurray",
+    published: true,
     title:
       "Eco-Friendly Pest Control & Extermination in Fort McMurray | Ecoheat",
     description:
@@ -983,56 +1024,6 @@ const detailPages: EditablePage[] = [
           "Edmonton Depot Location: Opening soon to serve Northern Alberta communities and businesses.",
           "Exclusive Inventory: Access premium stock and equipment completely unavailable on the open market.",
           "Expert On-Site Support: Receive tailored application advice directly from licensed pest professionals.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "airdrie",
-    title: "Pest Control Airdrie | Ecoheat Pest Control",
-    description:
-      "Proactive pest elimination and thermal bed bug removal for Airdrie — north Calgary's largest commuter city. Eco-friendly residential and commercial pest control.",
-    heroTitle: "Pest Control in Airdrie",
-    heroDescription:
-      "Proactive pest elimination and thermal bed bug removal for north Calgary's largest commuter city. Ecoheat delivers same-day residential and commercial pest control in Airdrie.",
-    heroImage: siteConfig.images.hero.src,
-    sections: [
-      {
-        id: "overview",
-        title: "Trusted Pest Control for Airdrie Homes & Businesses",
-        content:
-          "Ecoheat Pest Control provides professional, eco-friendly pest management for Airdrie residents and businesses. From bed bug heat treatments to rodent control, our local technicians are ready to help.",
-        image: siteConfig.images.about.src,
-        bullets: [
-          "1-day chemical-free bed bug heat treatments",
-          "Residential and commercial pest control",
-          "Discreet unmarked vehicles",
-          "1-year warranty options on qualifying treatments",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "chestermere",
-    title: "Pest Control Chestermere | Ecoheat Pest Control",
-    description:
-      "Effective spider, rodent, and thermal bed bug solutions for lakefront and residential properties in Chestermere. Eco-friendly pest control by Ecoheat.",
-    heroTitle: "Pest Control in Chestermere",
-    heroDescription:
-      "Effective spider, rodent, and thermal bed bug solutions for lakefront and residential properties in Chestermere. Ecoheat provides eco-friendly pest control across the community.",
-    heroImage: siteConfig.images.hero.src,
-    sections: [
-      {
-        id: "overview",
-        title: "Lakefront & Residential Pest Solutions",
-        content:
-          "Ecoheat Pest Control serves Chestermere with professional bed bug heat treatments, rodent control, and general pest management tailored for homes and local businesses.",
-        image: siteConfig.images.about.src,
-        bullets: [
-          "Thermal bed bug eradication",
-          "Spider and rodent control",
-          "Eco-friendly IPM approach",
-          "Fast local response for Chestermere residents",
         ],
       },
     ],
@@ -1188,6 +1179,9 @@ export const defaultCmsContent: CmsContent = {
       },
     ],
     faq: service.faq.map((item) => ({ ...item })),
+    priceRange: servicePrices[service.slug]?.priceRange ?? "",
+    pricingNote: servicePrices[service.slug]?.pricingNote ?? "",
   })),
   faqs: homeFaqs.map((item) => ({ ...item })),
+  pricing: defaultPricingContent,
 };

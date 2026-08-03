@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
-import { locationLinks } from "@/config/navigation";
+import { getCmsContent, getLocationLinks } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Service Locations | Ecoheat Pest Control Alberta",
-  description:
-    "Find Ecoheat pest control services across Alberta — Calgary, Chestermere, Airdrie, Edmonton, Lethbridge, Red Deer, and Fort McMurray.",
-  alternates: { canonical: "/locations" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const links = getLocationLinks(cms.pages);
+  const names = links.map((l) => l.label).join(", ");
+  return {
+    title: "Service Locations | Pest Control Alberta",
+    description: `Find pest control services across Alberta — ${names || "Calgary and surrounding communities"}.`,
+    alternates: { canonical: "/locations" },
+  };
+}
 
-export default function LocationsPage() {
+export default async function LocationsPage() {
+  const cms = await getCmsContent();
+  const locationLinks = getLocationLinks(cms.pages);
+
   return (
     <>
-      <section className="relative overflow-hidden bg-base-900 pt-32 pb-16 text-white md:pt-40">
+      <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.5rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)]">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 text-center lg:px-8">
           <p className="text-xs font-bold tracking-[0.2em] text-green-400 uppercase">

@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import { AboutPageContent } from "@/components/about/AboutPageContent";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Eco Pest Control Calgary | Bed Bug Heat Treatment | Ecoheat",
-  description:
-    "Calgary’s trusted eco-friendly exterminator since 2010, providing professional chemical-free bed bug heat treatments and traditional pest control for homes and businesses.",
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "Eco Pest Control Calgary | Bed Bug Heat Treatment | Ecoheat",
-    description:
-      "Calgary’s trusted eco-friendly exterminator since 2010, providing professional chemical-free bed bug heat treatments and traditional pest control for homes and businesses.",
-    url: "/about",
-    type: "website",
-    images: [{ url: "/images/about-hero.png" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "about");
+  return {
+    title: page?.title ?? "About | Pest Warriors",
+    description: page?.description ?? "",
+    alternates: { canonical: "/about" },
+  };
+}
 
-export default function AboutPage() {
-  return <AboutPageContent />;
+export default async function AboutPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "about");
+  return (
+    <AboutPageContent
+      page={page}
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      heroImage={page?.heroImage}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

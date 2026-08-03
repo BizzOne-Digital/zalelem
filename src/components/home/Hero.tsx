@@ -54,7 +54,7 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[72%_32%]"
+          className="object-cover object-[center_28%] sm:object-[65%_30%] lg:object-[72%_32%]"
         />
         <div
           className="absolute inset-0 bg-gradient-to-r from-base-950/95 via-base-900/80 to-base-900/25"
@@ -62,7 +62,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-14 md:pt-36 lg:px-8 lg:pt-40 lg:pb-16 xl:pt-44">
+      <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-14 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-16 xl:pt-[calc(var(--header-offset)+3rem)]">
         <div className="grid items-center gap-10 lg:grid-cols-[1.35fr_0.65fr]">
           <div>
             <motion.p

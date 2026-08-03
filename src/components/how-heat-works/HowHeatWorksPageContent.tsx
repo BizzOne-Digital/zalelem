@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 const whyChoose = [
   {
@@ -157,9 +158,15 @@ function AlbertaMap() {
   );
 }
 
-export function HowHeatWorksPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function HowHeatWorksPageContent(props: CmsHeroProps = {}) {
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
+  const hero = pickHero(props, {
+    title: "Professional Bed Bug Heat Treatment",
+    description:
+      "We provide absolute bed bug elimination across Calgary and Edmonton. Our advanced thermal process kills all bed bug life stages, including eggs, in a single day.",
+    image: "/images/how-heat-works-hero.png",
+  });
 
   return (
     <>
@@ -167,7 +174,7 @@ export function HowHeatWorksPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/how-heat-works-hero.png"
+            src={hero.image || "/images/how-heat-works-hero.png"}
             alt="Technician monitoring bed bug heat treatment equipment"
             fill
             priority
@@ -180,18 +187,16 @@ export function HowHeatWorksPageContent() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-14 md:pt-36 lg:px-8 lg:pb-0 xl:pt-44">
+        <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-14 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-0">
           <Reveal>
             <p className="text-[0.72rem] font-bold tracking-[0.22em] text-lime-400 uppercase">
               How Heat Treatment Works
             </p>
             <h1 className="font-display mt-4 max-w-2xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Professional Bed Bug Heat Treatment
+              {hero.title}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-              We provide absolute bed bug elimination across Calgary and
-              Edmonton. Our advanced thermal process kills all bed bug life
-              stages, including eggs, in a single day.
+              {hero.description}
             </p>
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/contact" className="btn-lime w-full sm:w-auto">

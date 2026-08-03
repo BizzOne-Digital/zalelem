@@ -9,7 +9,7 @@ import {
 } from "@/config/locations";
 import { primaryServices } from "@/config/services";
 import { siteConfig } from "@/config/site";
-import { getCmsContent } from "@/lib/cms";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
 type Props = {
   slug: string;
@@ -27,7 +27,7 @@ export async function LocationPage({
   children,
 }: Props) {
   const cms = await getCmsContent();
-  const page = cms.pages.find((item) => item.slug === slug);
+  const page = getCmsPage(cms.pages, slug);
   if (!page) notFound();
 
   const area = contactArea || slug;
@@ -39,7 +39,7 @@ export async function LocationPage({
 
   return (
     <>
-      <section className="relative overflow-hidden bg-base-900 pt-28 pb-16 text-white md:pt-36 md:pb-20 xl:pt-44">
+      <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.25rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)] md:pb-20">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 text-center lg:px-8">
           <p className="text-xs font-bold tracking-[0.2em] text-green-400 uppercase">
@@ -234,7 +234,7 @@ export async function LocationPage({
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
-                className="rounded-xl border border-line bg-band px-5 py-4 font-semibold text-ink transition hover:border-green-600 hover:bg-surface"
+                className="inline-flex min-h-11 items-center rounded-xl border border-line bg-band px-5 py-3 font-semibold text-ink transition hover:border-green-600 hover:bg-surface"
               >
                 {service.shortName}
               </Link>

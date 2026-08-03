@@ -14,7 +14,7 @@ export function FinalCta() {
             Contact Pest Warriors today and let us protect what matters most.
           </p>
         </div>
-        <Link href="/contact" className="btn-primary shrink-0">
+        <Link href="/contact" className="btn-primary w-full shrink-0 sm:w-auto">
           Request Your Free Quote
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>

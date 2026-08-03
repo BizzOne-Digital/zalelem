@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 /** Mobile-only sticky "Request a Quote" bar shown after scrolling. */
 export function StickyQuoteButton() {
   const [visible, setVisible] = useState(false);
+  const [nearFooter, setNearFooter] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 480);
@@ -15,10 +16,24 @@ export function StickyQuoteButton() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setNearFooter(entry.isIntersecting),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
+  const show = visible && !nearFooter;
+
   return (
     <div
       className={`fixed inset-x-4 z-40 transition-all duration-300 md:hidden ${
-        visible
+        show
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-6 opacity-0"
       }`}

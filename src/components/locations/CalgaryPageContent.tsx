@@ -140,16 +140,8 @@ const vehiclePoints = [
 
 const communities = [
   {
-    name: "Airdrie",
-    text: "Proactive pest elimination and thermal bed bug removal for north Calgary's largest commuter city.",
-  },
-  {
     name: "Cochrane",
     text: "Specialized residential and commercial pest management along the scenic Bow River valley.",
-  },
-  {
-    name: "Chestermere",
-    text: "Effective spider, rodent, and thermal bed bug solutions for lakefront and residential properties.",
   },
   {
     name: "Okotoks",
@@ -234,24 +226,34 @@ function BulletList({
   );
 }
 
-export function CalgaryPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function CalgaryPageContent({
+  heroTitle,
+  heroDescription,
+  phone: phoneProp,
+  phoneHref: phoneHrefProp,
+}: {
+  heroTitle?: string;
+  heroDescription?: string;
+  phone?: string;
+  phoneHref?: string;
+} = {}) {
+  const phone = phoneProp || siteConfig.contact.phone;
+  const phoneHref = phoneHrefProp || siteConfig.contact.phoneHref;
 
   return (
     <>
-      <section className="relative overflow-hidden bg-base-900 pt-32 pb-16 text-white md:pt-40">
+      <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.5rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)]">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 text-center lg:px-8">
           <p className="text-xs font-bold tracking-[0.2em] text-green-400 uppercase">
             Pest Control · Calgary
           </p>
           <h1 className="font-display mt-3 text-[1.75rem] font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-            EcoHeat Pest Control Calgary
+            {heroTitle || "EcoHeat Pest Control Calgary"}
           </h1>
           <p className="mx-auto mt-4 max-w-3xl text-base text-white/75 sm:text-lg">
-            Your trusted choice for professional, reliable, and eco-friendly pest
-            control in Calgary and surrounding communities.
+            {heroDescription ||
+              "Your trusted choice for professional, reliable, and eco-friendly pest control in Calgary and surrounding communities."}
           </p>
           <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
             <Link href="/contact?area=calgary" className="btn-primary w-full sm:w-auto">
@@ -420,8 +422,7 @@ export function CalgaryPageContent() {
               We proudly provide industry-leading pest control and 100% effective
               bed bug heat treatments throughout Calgary and all surrounding
               commuter communities — from Balzac warehouses to Springbank and
-              Bearspaw acreages, and households in Airdrie, Cochrane, Chestermere,
-              and Okotoks.
+              Bearspaw acreages, and households in Cochrane, Okotoks, and beyond.
             </p>
           </div>
           <ul className="mx-auto mt-10 grid max-w-5xl gap-3 sm:grid-cols-2">

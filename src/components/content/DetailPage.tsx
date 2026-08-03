@@ -11,13 +11,14 @@ export async function DetailPage({ slug }: { slug: string }) {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-base-900 pt-28 pb-16 text-white md:pt-36 md:pb-20 xl:pt-44">
+      <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.25rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)] md:pb-20">
         {page.heroImage ? (
           <Image
             src={resolveCmsImage(page.heroImage)}
             alt=""
             fill
             priority
+            sizes="100vw"
             className="object-cover object-center"
           />
         ) : null}
@@ -48,7 +49,7 @@ export async function DetailPage({ slug }: { slug: string }) {
                 className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
               >
                 <div
-                  className={`relative min-h-64 overflow-hidden rounded-2xl border border-line shadow-card lg:min-h-80 ${
+                  className={`relative aspect-[4/3] min-h-0 overflow-hidden rounded-2xl border border-line shadow-card lg:aspect-auto lg:min-h-80 ${
                     imageFirst ? "lg:order-1" : "lg:order-2"
                   }`}
                 >
@@ -56,6 +57,7 @@ export async function DetailPage({ slug }: { slug: string }) {
                     src={resolveCmsImage(section.image || page.heroImage)}
                     alt={section.title}
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>

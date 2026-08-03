@@ -32,16 +32,16 @@ export function PropertyTypes() {
           </h2>
         </Reveal>
 
-        <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-8">
+        <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-8">
           {types.map((type, i) => (
             <Reveal key={type.label} as="li" delay={i * 0.03}>
-              <div className="flex h-full flex-col items-center gap-3 text-center">
+              <div className="flex h-full flex-col items-center gap-3 px-1 text-center">
                 <type.icon
-                  className="h-9 w-9 text-base-800"
+                  className="h-9 w-9 shrink-0 text-base-800"
                   strokeWidth={1.4}
                   aria-hidden="true"
                 />
-                <span className="text-xs leading-snug font-bold text-ink sm:text-sm">
+                <span className="text-balance text-xs leading-snug font-bold text-ink sm:text-sm">
                   {type.label}
                 </span>
               </div>

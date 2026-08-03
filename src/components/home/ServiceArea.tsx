@@ -37,10 +37,10 @@ export function ServiceArea() {
               {siteConfig.location.serviceAreas.map((area) => (
                 <li
                   key={area}
-                  className="flex items-center gap-2 rounded-lg border border-line bg-band px-3 py-2.5 text-sm font-semibold text-ink"
+                  className="flex min-w-0 items-center gap-2 rounded-lg border border-line bg-band px-3 py-2.5 text-sm font-semibold text-ink"
                 >
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-green-600" aria-hidden="true" />
-                  {area}
+                  <span className="min-w-0 truncate">{area}</span>
                 </li>
               ))}
               <li className="flex items-center gap-2 rounded-lg border border-dashed border-line px-3 py-2.5 text-xs text-muted">

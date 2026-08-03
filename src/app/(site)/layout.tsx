@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { getCmsContent } from "@/lib/cms";
+import { getCmsContent, getLocationLinks } from "@/lib/cms";
 
 export default async function SiteLayout({
   children,
@@ -8,6 +8,7 @@ export default async function SiteLayout({
   children: React.ReactNode;
 }>) {
   const cms = await getCmsContent();
+  const locations = getLocationLinks(cms.pages);
 
   return (
     <>
@@ -17,7 +18,7 @@ export default async function SiteLayout({
       >
         Skip to main content
       </a>
-      <Header site={cms.site} />
+      <Header site={cms.site} locations={locations} />
       <main id="main-content" className="flex-1">
         {children}
       </main>

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 const whoFeatures = [
   {
@@ -131,11 +132,17 @@ const missionPoints = [
   "Protect homes and businesses with care, integrity, and proven expertise",
 ];
 
-export function AboutPageContent() {
+export function AboutPageContent(props: CmsHeroProps = {}) {
   const city = siteConfig.location.city;
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
   const areas = siteConfig.location.serviceAreas;
+  const hero = pickHero(props, {
+    title: `Protecting ${city} Properties With Care & Integrity`,
+    description:
+      "Calgary's trusted eco-friendly exterminator since 2010, providing professional chemical-free bed bug heat treatments and traditional pest control for homes and businesses.",
+    image: "/images/about-hero.png",
+  });
 
   return (
     <>
@@ -143,7 +150,7 @@ export function AboutPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/about-hero.png"
+            src={hero.image || "/images/about-hero.png"}
             alt="EcoHeat pest control technicians ready to protect a Calgary home"
             fill
             priority
@@ -156,20 +163,24 @@ export function AboutPageContent() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 md:pt-36 lg:px-8 lg:pb-20 xl:pt-44">
+        <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-16 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-20">
           <Reveal>
             <p className="text-[0.72rem] font-bold tracking-[0.22em] text-lime-400 uppercase">
               Family-Owned — Calgary Proud
             </p>
             <h1 className="font-display mt-4 max-w-2xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-[3.15rem]">
-              Protecting{" "}
-              <span className="text-lime-400">{city}</span> Properties With
-              Care &amp; Integrity
+              {props.heroTitle ? (
+                hero.title
+              ) : (
+                <>
+                  Protecting{" "}
+                  <span className="text-lime-400">{city}</span> Properties With
+                  Care &amp; Integrity
+                </>
+              )}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-              Calgary&apos;s trusted eco-friendly exterminator since 2010,
-              providing professional chemical-free bed bug heat treatments and
-              traditional pest control for homes and businesses.
+              {hero.description}
             </p>
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/contact" className="btn-primary w-full sm:w-auto">

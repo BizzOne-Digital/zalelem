@@ -8,6 +8,7 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { OfferSection } from "@/components/home/OfferSection";
 import { FaqSchema, LocalBusinessSchema } from "@/components/StructuredData";
 import { StickyQuoteButton } from "@/components/StickyQuoteButton";
+import { getCmsContent } from "@/lib/cms";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -31,14 +32,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const cms = await getCmsContent();
+
   return (
     <>
       <LocalBusinessSchema />
       <FaqSchema />
       <div className="pb-24 md:pb-0">
         <Hero />
-        <ServicesPreview />
+        <ServicesPreview services={cms.services} city={cms.site.city} />
         <AboutSection />
         <PropertyTypes />
         <WhyChoose />

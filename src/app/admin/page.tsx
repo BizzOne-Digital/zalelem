@@ -3,15 +3,97 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { PricingEditor } from "@/components/admin/PricingEditor";
+import {
+  SectionEditor,
+  TextArea,
+  TextInput,
+  slugify,
+} from "@/components/admin/admin-fields";
+import { defaultPricingContent } from "@/lib/default-pricing";
 import type {
   CmsContent,
   EditablePage,
-  EditableSection,
   EditableService,
   ServiceFaq,
 } from "@/types/cms";
 
-type Tab = "pages" | "services" | "faqs" | "settings";
+type Tab = "pages" | "locations" | "services" | "pricing" | "faqs" | "settings";
+
+const RESERVED_SLUGS = new Set([
+  "about",
+  "admin",
+  "api",
+  "aprehend-bed-bugs",
+  "bed-bug-heat-treatment",
+  "commercial",
+  "contact",
+  "diy-pest-control",
+  "faqs",
+  "how-heat-treatment-works",
+  "how-it-works",
+  "locations",
+  "offers",
+  "pricing",
+  "privacy",
+  "property-types",
+  "service-area",
+  "services",
+  "terms",
+  "why-choose",
+]);
+
+function emptyPage(kind: "page" | "location"): EditablePage {
+  const stamp = Date.now();
+  return {
+    slug: kind === "location" ? `city-${stamp}` : `page-${stamp}`,
+    kind,
+    cityLabel: kind === "location" ? "New City" : undefined,
+    published: true,
+    title: kind === "location" ? "New Location" : "New Page",
+    description: "",
+    heroTitle: kind === "location" ? "Pest Control in New City" : "New Page",
+    heroDescription: "",
+    heroImage: "",
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        content: "",
+        image: "",
+        bullets: [],
+      },
+    ],
+  };
+}
+
+function emptyService(): EditableService {
+  const stamp = Date.now();
+  return {
+    slug: `service-${stamp}`,
+    name: "New Service",
+    shortName: "New",
+    cardDescription: "",
+    heroTitle: "New Service",
+    heroDescription: "",
+    heroImage: "",
+    whoFor: "",
+    warningSigns: [],
+    approach: [],
+    sections: [
+      {
+        id: "overview",
+        title: "Service Overview",
+        content: "",
+        image: "",
+        bullets: [],
+      },
+    ],
+    faq: [],
+    priceRange: "",
+    pricingNote: "",
+  };
+}
 
 export default function AdminPage() {
   const router = useRouter();
@@ -19,6 +101,7 @@ export default function AdminPage() {
   const [content, setContent] = useState<CmsContent | null>(null);
   const [saving, setSaving] = useState(false);
   const [pageIdx, setPageIdx] = useState(0);
+  const [locationIdx, setLocationIdx] = useState(0);
   const [serviceIdx, setServiceIdx] = useState(0);
   const [message, setMessage] = useState("");
   const [loadError, setLoadError] = useState("");
@@ -29,7 +112,10 @@ export default function AdminPage() {
         const res = await fetch("/api/content");
         if (!res.ok) throw new Error("Failed to load content");
         const data = (await res.json()) as CmsContent;
-        setContent(data);
+        setContent({
+          ...data,
+          pricing: data.pricing ?? defaultPricingContent,
+        });
       } catch {
         setLoadError("Could not load CMS content from the database.");
       }
@@ -37,20 +123,31 @@ export default function AdminPage() {
     void load();
   }, []);
 
+  const marketingPages = useMemo(
+    () =>
+      (content?.pages ?? [])
+        .map((page, index) => ({ page, index }))
+        .filter(({ page }) => page.kind !== "location"),
+    [content],
+  );
+
+  const locationPages = useMemo(
+    () =>
+      (content?.pages ?? [])
+        .map((page, index) => ({ page, index }))
+        .filter(({ page }) => page.kind === "location"),
+    [content],
+  );
+
+  const selectedMarketing = marketingPages[pageIdx] ?? null;
+  const selectedLocation = locationPages[locationIdx] ?? null;
+  const selectedService = content?.services?.[serviceIdx] ?? null;
+
   const logout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
     router.replace("/admin/login");
     router.refresh();
   };
-
-  const selectedPage = useMemo(
-    () => (content?.pages?.[pageIdx] ? content.pages[pageIdx] : null),
-    [content, pageIdx],
-  );
-  const selectedService = useMemo(
-    () => (content?.services?.[serviceIdx] ? content.services[serviceIdx] : null),
-    [content, serviceIdx],
-  );
 
   if (loadError) {
     return (
@@ -93,6 +190,11 @@ export default function AdminPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(content.faqs),
         }),
+        fetch("/api/admin/pricing", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(content.pricing ?? defaultPricingContent),
+        }),
       ]);
       if (results.some((r) => !r.ok)) throw new Error("Save failed");
       setMessage("Saved to database successfully.");
@@ -109,17 +211,66 @@ export default function AdminPage() {
       .map((line) => line.trim())
       .filter(Boolean);
 
+  const updatePageAt = (absoluteIndex: number, page: EditablePage) => {
+    const pages = [...content.pages];
+    pages[absoluteIndex] = page;
+    setContent({ ...content, pages });
+  };
+
+  const deletePageAt = (absoluteIndex: number) => {
+    if (!confirm("Delete this page permanently?")) return;
+    const pages = content.pages.filter((_, i) => i !== absoluteIndex);
+    setContent({ ...content, pages });
+    setPageIdx(0);
+    setLocationIdx(0);
+  };
+
+  const addPage = (kind: "page" | "location") => {
+    const page = emptyPage(kind);
+    setContent({ ...content, pages: [...content.pages, page] });
+    if (kind === "location") {
+      setTab("locations");
+      setLocationIdx(locationPages.length);
+    } else {
+      setTab("pages");
+      setPageIdx(marketingPages.length);
+    }
+  };
+
+  const addService = () => {
+    setContent({ ...content, services: [...content.services, emptyService()] });
+    setTab("services");
+    setServiceIdx(content.services.length);
+  };
+
+  const deleteService = (idx: number) => {
+    if (!confirm("Delete this service permanently?")) return;
+    setContent({
+      ...content,
+      services: content.services.filter((_, i) => i !== idx),
+    });
+    setServiceIdx(0);
+  };
+
+  const tabs: { id: Tab; label: string; count?: number }[] = [
+    { id: "pages", label: "Pages", count: marketingPages.length },
+    { id: "locations", label: "Locations", count: locationPages.length },
+    { id: "services", label: "Services", count: content.services.length },
+    { id: "pricing", label: "Pricing" },
+    { id: "faqs", label: "FAQs", count: content.faqs.length },
+    { id: "settings", label: "Settings" },
+  ];
+
   return (
     <main className="min-h-screen bg-base-950 py-8 text-white">
       <div className="mx-auto mb-6 flex max-w-[90rem] items-center justify-between gap-4 px-4 lg:px-8">
         <div>
           <p className="text-xs font-bold tracking-[0.2em] text-gold-500 uppercase">
-            Ecoheat CMS
+            Pest Warriors CMS
           </p>
           <h1 className="font-display text-2xl font-extrabold">Admin Dashboard</h1>
           <p className="mt-1 text-sm text-white/55">
-            {content.pages.length} pages · {content.services.length} services ·{" "}
-            {content.faqs.length} FAQs
+            Edit pages, locations, services, and pricing — then Save All.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -148,52 +299,91 @@ export default function AdminPage() {
       ) : null}
 
       <div className="mx-auto grid max-w-[90rem] gap-6 px-4 lg:grid-cols-[220px_260px_1fr] lg:px-8">
-        {/* Main tabs */}
         <aside className="h-fit rounded-2xl border border-white/10 bg-base-900/80 p-3">
-          {(["pages", "services", "faqs", "settings"] as Tab[]).map((item) => (
+          {tabs.map((item) => (
             <button
-              key={item}
+              key={item.id}
               type="button"
-              className={`mb-1.5 w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold capitalize ${
-                tab === item
+              className={`mb-1.5 w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold ${
+                tab === item.id
                   ? "bg-gold-500 text-base-950"
                   : "bg-base-800 text-white hover:bg-base-700"
               }`}
-              onClick={() => setTab(item)}
+              onClick={() => setTab(item.id)}
             >
-              {item}
-              {item === "pages" ? ` (${content.pages.length})` : null}
-              {item === "services" ? ` (${content.services.length})` : null}
-              {item === "faqs" ? ` (${content.faqs.length})` : null}
+              {item.label}
+              {item.count !== undefined ? ` (${item.count})` : null}
             </button>
           ))}
         </aside>
 
-        {/* Item list for pages / services */}
-        {(tab === "pages" || tab === "services") && (
+        {(tab === "pages" || tab === "locations" || tab === "services") && (
           <aside className="max-h-[75vh] overflow-y-auto rounded-2xl border border-white/10 bg-base-900/80 p-3">
-            <p className="mb-2 px-2 text-xs font-bold tracking-wide text-white/45 uppercase">
-              {tab === "pages" ? "All Pages" : "All Services"}
-            </p>
+            <div className="mb-3 flex items-center justify-between gap-2 px-2">
+              <p className="text-xs font-bold tracking-wide text-white/45 uppercase">
+                {tab === "pages"
+                  ? "All Pages"
+                  : tab === "locations"
+                    ? "All Locations"
+                    : "All Services"}
+              </p>
+              <button
+                type="button"
+                className="rounded-md bg-gold-500 px-2 py-1 text-[0.65rem] font-bold text-base-950"
+                onClick={() => {
+                  if (tab === "services") addService();
+                  else addPage(tab === "locations" ? "location" : "page");
+                }}
+              >
+                + Add
+              </button>
+            </div>
+
             {tab === "pages"
-              ? content.pages.map((page, idx) => (
+              ? marketingPages.map(({ page, index }, listIdx) => (
                   <button
                     key={page.slug}
                     type="button"
-                    onClick={() => setPageIdx(idx)}
+                    onClick={() => setPageIdx(listIdx)}
                     className={`mb-1 w-full rounded-lg px-3 py-2.5 text-left text-sm ${
-                      pageIdx === idx
+                      pageIdx === listIdx
                         ? "bg-green-600/30 font-bold text-green-300"
                         : "text-white/80 hover:bg-white/5"
                     }`}
                   >
                     <span className="block font-semibold">{page.title}</span>
                     <span className="text-[0.7rem] text-white/45">
-                      /{page.slug} · {page.sections.length} sections
+                      /{page.slug}
                     </span>
                   </button>
                 ))
-              : content.services.map((service, idx) => (
+              : null}
+
+            {tab === "locations"
+              ? locationPages.map(({ page }, listIdx) => (
+                  <button
+                    key={page.slug}
+                    type="button"
+                    onClick={() => setLocationIdx(listIdx)}
+                    className={`mb-1 w-full rounded-lg px-3 py-2.5 text-left text-sm ${
+                      locationIdx === listIdx
+                        ? "bg-green-600/30 font-bold text-green-300"
+                        : "text-white/80 hover:bg-white/5"
+                    }`}
+                  >
+                    <span className="block font-semibold">
+                      {page.cityLabel || page.title}
+                    </span>
+                    <span className="text-[0.7rem] text-white/45">
+                      /{page.slug}
+                      {page.published === false ? " · hidden" : ""}
+                    </span>
+                  </button>
+                ))
+              : null}
+
+            {tab === "services"
+              ? content.services.map((service, idx) => (
                   <button
                     key={service.slug}
                     type="button"
@@ -206,15 +396,22 @@ export default function AdminPage() {
                   >
                     <span className="block font-semibold">{service.name}</span>
                     <span className="text-[0.7rem] text-white/45">
-                      /{service.slug} · {service.sections.length} sections
+                      /services/{service.slug}
+                      {service.priceRange ? ` · ${service.priceRange}` : ""}
                     </span>
                   </button>
-                ))}
+                ))
+              : null}
           </aside>
         )}
 
-        {/* Editor */}
-        <section className="min-w-0 rounded-2xl border border-white/10 bg-base-900/70 p-5">
+        <section
+          className={`min-w-0 rounded-2xl border border-white/10 bg-base-900/70 p-5 ${
+            tab === "pricing" || tab === "faqs" || tab === "settings"
+              ? "lg:col-span-2"
+              : ""
+          }`}
+        >
           {tab === "settings" ? (
             <SettingsEditor
               content={content}
@@ -223,14 +420,24 @@ export default function AdminPage() {
             />
           ) : null}
 
-          {tab === "pages" && selectedPage ? (
+          {tab === "pages" && selectedMarketing ? (
             <EditablePageForm
-              page={selectedPage}
-              onChange={(page) => {
-                const pages = [...content.pages];
-                pages[pageIdx] = page;
-                setContent({ ...content, pages });
-              }}
+              page={selectedMarketing.page}
+              allowSlugEdit
+              showLocationFields={false}
+              onChange={(page) => updatePageAt(selectedMarketing.index, page)}
+              onDelete={() => deletePageAt(selectedMarketing.index)}
+            />
+          ) : null}
+
+          {tab === "locations" && selectedLocation ? (
+            <EditablePageForm
+              page={selectedLocation.page}
+              allowSlugEdit
+              showLocationFields
+              reservedSlugs={RESERVED_SLUGS}
+              onChange={(page) => updatePageAt(selectedLocation.index, page)}
+              onDelete={() => deletePageAt(selectedLocation.index)}
             />
           ) : null}
 
@@ -242,6 +449,14 @@ export default function AdminPage() {
                 services[serviceIdx] = service;
                 setContent({ ...content, services });
               }}
+              onDelete={() => deleteService(serviceIdx)}
+            />
+          ) : null}
+
+          {tab === "pricing" ? (
+            <PricingEditor
+              pricing={content.pricing ?? defaultPricingContent}
+              onChange={(pricing) => setContent({ ...content, pricing })}
             />
           ) : null}
 
@@ -257,77 +472,20 @@ export default function AdminPage() {
   );
 }
 
-function SectionEditor({
-  section,
-  index,
-  onChange,
-  onRemove,
-  folder = "pages",
-}: {
-  section: EditableSection;
-  index: number;
-  onChange: (next: EditableSection) => void;
-  onRemove: () => void;
-  folder?: "pages" | "products" | "gallery" | "misc";
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-base-800/50 p-5">
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <h3 className="font-display text-lg font-bold text-gold-500">
-          Section {index + 1}
-          <span className="ml-2 text-xs font-normal text-white/40">
-            id: {section.id}
-          </span>
-        </h3>
-        <button
-          type="button"
-          onClick={onRemove}
-          className="rounded-lg border border-red-500/40 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/10"
-        >
-          Remove section
-        </button>
-      </div>
-      <div className="space-y-3">
-        <TextInput
-          label="Section Title"
-          value={section.title}
-          onChange={(v) => onChange({ ...section, title: v })}
-        />
-        <TextArea
-          label="Section Content"
-          value={section.content}
-          onChange={(v) => onChange({ ...section, content: v })}
-        />
-        <ImageUploadField
-          label="Section Image"
-          folder={folder}
-          value={section.image}
-          onChange={(url) => onChange({ ...section, image: url })}
-        />
-        <TextArea
-          label="Bullets (one per line)"
-          value={section.bullets.join("\n")}
-          onChange={(v) =>
-            onChange({
-              ...section,
-              bullets: v
-                .split("\n")
-                .map((x) => x.trim())
-                .filter(Boolean),
-            })
-          }
-        />
-      </div>
-    </div>
-  );
-}
-
 function EditablePageForm({
   page,
   onChange,
+  onDelete,
+  allowSlugEdit,
+  showLocationFields,
+  reservedSlugs,
 }: {
   page: EditablePage;
   onChange: (next: EditablePage) => void;
+  onDelete: () => void;
+  allowSlugEdit?: boolean;
+  showLocationFields?: boolean;
+  reservedSlugs?: Set<string>;
 }) {
   const addSection = () => {
     const id = `section-${Date.now()}`;
@@ -348,15 +506,54 @@ function EditablePageForm({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="font-display text-xl font-extrabold text-white">
-          Edit Page
-        </h2>
-        <p className="text-sm text-white/50">Slug: /{page.slug}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-xl font-extrabold text-white">
+            {showLocationFields ? "Edit Location" : "Edit Page"}
+          </h2>
+          <p className="text-sm text-white/50">Slug: /{page.slug}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="rounded-lg border border-red-500/40 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/10"
+        >
+          Delete
+        </button>
       </div>
 
       <div className="space-y-3 rounded-2xl border border-gold-500/25 bg-base-800/40 p-5">
         <h3 className="font-bold text-gold-500">Page / Hero</h3>
+        {allowSlugEdit ? (
+          <TextInput
+            label="URL Slug"
+            value={page.slug}
+            onChange={(v) => {
+              const next = slugify(v);
+              if (reservedSlugs?.has(next)) return;
+              onChange({ ...page, slug: next });
+            }}
+          />
+        ) : null}
+        {showLocationFields ? (
+          <>
+            <TextInput
+              label="City Label"
+              value={page.cityLabel ?? ""}
+              onChange={(v) => onChange({ ...page, cityLabel: v })}
+            />
+            <label className="flex items-center gap-2 text-sm text-white/80">
+              <input
+                type="checkbox"
+                checked={page.published !== false}
+                onChange={(e) =>
+                  onChange({ ...page, published: e.target.checked })
+                }
+              />
+              Published (show in Locations menu)
+            </label>
+          </>
+        ) : null}
         <TextInput
           label="SEO Title"
           value={page.title}
@@ -427,9 +624,11 @@ function EditablePageForm({
 function EditableServiceForm({
   service,
   onChange,
+  onDelete,
 }: {
   service: EditableService;
   onChange: (next: EditableService) => void;
+  onDelete: () => void;
 }) {
   const addSection = () => {
     const id = `section-${Date.now()}`;
@@ -450,14 +649,28 @@ function EditableServiceForm({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="font-display text-xl font-extrabold text-white">
-          Edit Service
-        </h2>
-        <p className="text-sm text-white/50">Slug: /services/{service.slug}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-xl font-extrabold text-white">
+            Edit Service
+          </h2>
+          <p className="text-sm text-white/50">Slug: /services/{service.slug}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="rounded-lg border border-red-500/40 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/10"
+        >
+          Delete
+        </button>
       </div>
 
       <div className="space-y-3 rounded-2xl border border-gold-500/25 bg-base-800/40 p-5">
+        <TextInput
+          label="URL Slug"
+          value={service.slug}
+          onChange={(v) => onChange({ ...service, slug: slugify(v) })}
+        />
         <TextInput
           label="Service Name"
           value={service.name}
@@ -467,6 +680,16 @@ function EditableServiceForm({
           label="Short Name"
           value={service.shortName}
           onChange={(v) => onChange({ ...service, shortName: v })}
+        />
+        <TextInput
+          label="Price Range"
+          value={service.priceRange ?? ""}
+          onChange={(v) => onChange({ ...service, priceRange: v })}
+        />
+        <TextInput
+          label="Pricing Note"
+          value={service.pricingNote ?? ""}
+          onChange={(v) => onChange({ ...service, pricingNote: v })}
         />
         <TextArea
           label="Card Description"
@@ -632,6 +855,19 @@ function SettingsEditor({
         />
       </label>
       <label className="md:col-span-2">
+        <span className="mb-1 block text-white/80">Service Areas Note</span>
+        <textarea
+          className="h-20 w-full rounded-lg border border-white/20 bg-base-800 px-3 py-2"
+          value={content.site.serviceAreasNote}
+          onChange={(e) =>
+            setContent({
+              ...content,
+              site: { ...content.site, serviceAreasNote: e.target.value },
+            })
+          }
+        />
+      </label>
+      <label className="md:col-span-2">
         <span className="mb-1 block text-white/80">Response Message</span>
         <textarea
           className="h-24 w-full rounded-lg border border-white/20 bg-base-800 px-3 py-2"
@@ -714,47 +950,5 @@ function FaqListEditor({
         Add FAQ
       </button>
     </div>
-  );
-}
-
-function TextInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="block text-sm">
-      <span className="mb-1 block text-white/80">{label}</span>
-      <input
-        className="w-full rounded-lg border border-white/20 bg-base-800 px-3 py-2"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </label>
-  );
-}
-
-function TextArea({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="block text-sm">
-      <span className="mb-1 block text-white/80">{label}</span>
-      <textarea
-        className="h-28 w-full rounded-lg border border-white/20 bg-base-800 px-3 py-2"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </label>
   );
 }

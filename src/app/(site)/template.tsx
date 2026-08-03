@@ -3,7 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
-/** Gentle route transition: soft fade with slight rise. */
+/**
+ * Gentle route transition. Starts visible so content still shows if
+ * client JS is delayed/blocked (e.g. LAN IP without allowedDevOrigins).
+ */
 export default function Template({ children }: { children: ReactNode }) {
   const reduceMotion = useReducedMotion();
 
@@ -11,9 +14,9 @@ export default function Template({ children }: { children: ReactNode }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 1, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.21, 0.65, 0.36, 1] }}
+      transition={{ duration: 0.35, ease: [0.21, 0.65, 0.36, 1] }}
     >
       {children}
     </motion.div>

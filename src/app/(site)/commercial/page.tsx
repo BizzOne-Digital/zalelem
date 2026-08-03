@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import { CommercialPageContent } from "@/components/commercial/CommercialPageContent";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Commercial Pest Control Alberta | EcoHeat Pest Control",
-  description:
-    "EcoHeat Pest Control provides expert commercial pest control and industrial pest management programs across Alberta. We specialize in serving Edmonton, Calgary, Lethbridge, Red Deer, Fort McMurray, and all surrounding areas.",
-  alternates: { canonical: "/commercial" },
-  openGraph: {
-    title: "Commercial Pest Control Alberta | EcoHeat Pest Control",
-    description:
-      "EcoHeat Pest Control provides expert commercial pest control and industrial pest management programs across Alberta.",
-    url: "/commercial",
-    type: "website",
-    images: [{ url: "/images/commercial-hero.png" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "commercial");
+  return {
+    title: page?.title ?? "Commercial Pest Control Alberta",
+    description: page?.description ?? "",
+    alternates: { canonical: "/commercial" },
+  };
+}
 
-export default function CommercialPage() {
-  return <CommercialPageContent />;
+export default async function CommercialPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "commercial");
+  return (
+    <CommercialPageContent
+      page={page}
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      heroImage={page?.heroImage}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

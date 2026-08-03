@@ -17,13 +17,23 @@ export default async function ServiceDetailPage({
 
   return (
     <>
-      <section className="relative overflow-hidden bg-base-900 pt-32 pb-16 text-white md:pt-40">
+      <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.5rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)]">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-          <h1 className="font-display text-4xl font-extrabold sm:text-5xl">
+          <h1 className="font-display text-[1.75rem] font-extrabold tracking-tight sm:text-4xl md:text-5xl">
             {service.heroTitle}
           </h1>
           <p className="mt-4 max-w-2xl text-white/70">{service.heroDescription}</p>
+          {service.priceRange ? (
+            <p className="mt-4 text-xl font-extrabold text-lime-400">
+              {service.priceRange}
+              {service.pricingNote ? (
+                <span className="ml-2 text-sm font-medium text-white/60">
+                  {service.pricingNote}
+                </span>
+              ) : null}
+            </p>
+          ) : null}
           <Link href="/contact" className="btn-primary mt-6">
             Request Quote
           </Link>

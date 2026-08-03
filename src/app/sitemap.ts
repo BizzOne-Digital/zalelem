@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
-import { locationLinks } from "@/config/navigation";
+import { getCmsContent, getLocationLinks } from "@/lib/cms";
 import { siteConfig } from "@/config/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.seo.siteUrl;
+  const cms = await getCmsContent();
+  const locations = getLocationLinks(cms.pages);
+
   const pages = [
     { path: "", priority: 1 },
     { path: "/about", priority: 0.85 },
@@ -14,7 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/aprehend-bed-bugs", priority: 0.85 },
     { path: "/pricing", priority: 0.9 },
     { path: "/locations", priority: 0.9 },
-    ...locationLinks.map((l) => ({ path: l.href, priority: 0.9 })),
+    ...locations.map((l) => ({ path: l.href, priority: 0.9 })),
+    ...cms.services.map((s) => ({
+      path: `/services/${s.slug}`,
+      priority: 0.8,
+    })),
     { path: "/diy-pest-control", priority: 0.8 },
     { path: "/contact", priority: 0.9 },
     { path: "/faqs", priority: 0.7 },

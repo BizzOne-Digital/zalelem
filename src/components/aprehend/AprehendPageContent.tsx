@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 const howItWorks = [
   {
@@ -118,9 +119,15 @@ const verdictStyles = {
   caution: "bg-lime-500/10 text-base-800 border-lime-500/30",
 };
 
-export function AprehendPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function AprehendPageContent(props: CmsHeroProps = {}) {
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
+  const hero = pickHero(props, {
+    title: "Aprehend® Bed Bug Treatment",
+    description:
+      "Aprehend® is a highly effective, modern biological treatment specifically designed to eliminate bed bug infestations. It works completely differently than traditional chemical sprays, offering a long-term, non-toxic solution to your pest problems.",
+    image: "/images/bed-bug-3.png",
+  });
 
   return (
     <>
@@ -128,7 +135,7 @@ export function AprehendPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/bed-bug-3.png"
+            src={hero.image || "/images/bed-bug-3.png"}
             alt=""
             fill
             priority
@@ -141,22 +148,26 @@ export function AprehendPageContent() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 md:pt-36 lg:px-8 lg:pb-20 xl:pt-44">
+        <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-16 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-20">
           <Reveal>
             <p className="text-[0.72rem] font-bold tracking-[0.22em] text-lime-400 uppercase">
               Professional Biological Pest Control
             </p>
             <h1 className="font-display mt-4 max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Aprehend<sup className="text-xl sm:text-2xl">®</sup> Bed Bug Treatment
+              {props.heroTitle ? (
+                hero.title
+              ) : (
+                <>
+                  Aprehend<sup className="text-xl sm:text-2xl">®</sup> Bed Bug
+                  Treatment
+                </>
+              )}
             </h1>
             <p className="mt-3 max-w-2xl text-lg font-semibold text-lime-400">
               Greater Calgary &amp; Edmonton Regional Solution
             </p>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/80">
-              Aprehend<sup>®</sup> is a highly effective, modern biological
-              treatment specifically designed to eliminate bed bug infestations.
-              It works completely differently than traditional chemical sprays,
-              offering a long-term, non-toxic solution to your pest problems.
+              {hero.description}
             </p>
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/contact" className="btn-lime w-full sm:w-auto">

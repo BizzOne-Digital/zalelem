@@ -14,9 +14,11 @@ import {
 } from "lucide-react";
 import { FacebookIcon } from "@/components/FacebookIcon";
 import { Wordmark } from "@/components/Wordmark";
-import { primaryNav, locationLinks } from "@/config/navigation";
+import { primaryNav, locationLinks as fallbackLocationLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import type { SiteSettings } from "@/types/cms";
+
+type LocationLink = { href: string; label: string };
 
 /** Shorter labels so the desktop bar fits without crushing the CTA. */
 const desktopLabels: Record<string, string> = {
@@ -29,7 +31,16 @@ const desktopLabels: Record<string, string> = {
   "/locations": "Locations",
 };
 
-export function Header({ site }: { site?: SiteSettings }) {
+export function Header({
+  site,
+  locations,
+}: {
+  site?: SiteSettings;
+  locations?: LocationLink[];
+}) {
+  const locationLinks = locations?.length
+    ? locations
+    : [...fallbackLocationLinks];
   const runtime = {
     contact: {
       phone: site?.phone || siteConfig.contact.phone,
@@ -142,7 +153,7 @@ export function Header({ site }: { site?: SiteSettings }) {
               Home
             </Link>
             {primaryNav.map((item) =>
-              "children" in item && item.children ? (
+              item.href === "/locations" ? (
                 <div
                   key={item.href}
                   className="relative shrink-0"
@@ -182,7 +193,7 @@ export function Header({ site }: { site?: SiteSettings }) {
                           >
                             All Locations
                           </Link>
-                          {item.children.map((child) => (
+                          {locationLinks.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}
@@ -257,7 +268,7 @@ export function Header({ site }: { site?: SiteSettings }) {
           <motion.nav
             id="mobile-menu"
             aria-label="Mobile"
-            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-line bg-surface md:top-[4.25rem] xl:hidden"
+            className="fixed inset-x-0 top-[var(--header-offset)] bottom-0 z-40 overflow-y-auto border-t border-line bg-surface xl:hidden"
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 32 }}
             animate={{ opacity: 1, x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 32 }}
@@ -276,7 +287,7 @@ export function Header({ site }: { site?: SiteSettings }) {
                 Home
               </Link>
               {primaryNav.map((item) =>
-                "children" in item && item.children ? (
+                item.href === "/locations" ? (
                   <div key={item.href}>
                     <button
                       type="button"
@@ -302,7 +313,7 @@ export function Header({ site }: { site?: SiteSettings }) {
                         >
                           All Locations
                         </Link>
-                        {item.children.map((child) => (
+                        {locationLinks.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}

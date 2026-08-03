@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 const trustItems = [
   "Commercial-Strength",
@@ -132,9 +133,16 @@ const steps = [
   },
 ];
 
-export function DiyPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function DiyPageContent(props: CmsHeroProps = {}) {
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
+  const hero = pickHero(props, {
+    title:
+      "Professional-Grade DIY Pest Control Solutions in Calgary and Edmonton",
+    description:
+      "Shop safe, technician-tested pest control products with maximum knockdown power—without weak, diluted retail sprays.",
+    image: "/images/diy-hero.png",
+  });
 
   return (
     <>
@@ -142,7 +150,7 @@ export function DiyPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/diy-hero.png"
+            src={hero.image || "/images/diy-hero.png"}
             alt="Professional DIY pest control equipment and supplies"
             fill
             priority
@@ -154,18 +162,16 @@ export function DiyPageContent() {
             aria-hidden="true"
           />
         </div>
-        <div className="relative mx-auto flex min-h-[28rem] max-w-7xl items-center px-4 py-28 md:min-h-[32rem] md:py-36 lg:min-h-[36rem] lg:px-8 xl:py-40">
+        <div className="relative mx-auto flex min-h-[24rem] max-w-7xl items-center px-4 py-[calc(var(--header-offset)+2rem)] md:min-h-[32rem] md:py-[calc(var(--header-offset)+3rem)] lg:min-h-[36rem] lg:px-8">
           <Reveal className="max-w-xl lg:max-w-[32rem]">
             <p className="text-[0.72rem] font-bold tracking-[0.22em] text-gold-400 uppercase">
               Professional DIY Pest Control
             </p>
             <h1 className="font-display mt-4 text-[1.75rem] leading-[1.15] font-extrabold tracking-tight sm:text-4xl lg:text-[2.65rem]">
-              Professional-Grade DIY Pest Control Solutions in Calgary and
-              Edmonton
+              {hero.title}
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-white/80 sm:text-lg">
-              Shop safe, technician-tested pest control products with maximum
-              knockdown power—without weak, diluted retail sprays.
+              {hero.description}
             </p>
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/contact" className="btn-lime w-full sm:w-auto">

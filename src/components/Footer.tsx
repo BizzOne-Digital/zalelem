@@ -129,7 +129,7 @@ export function Footer({
               <ShieldCheck className="h-7 w-7 text-gold-400" aria-hidden="true" />
             </span>
             <div>
-              <h2 className="font-display text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+              <h2 className="font-display text-balance text-xl font-extrabold tracking-tight text-white sm:text-2xl">
                 Ready for a Pest-Free Property?
               </h2>
               <p className="mt-1 text-sm text-white/85">
@@ -141,14 +141,14 @@ export function Footer({
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-base-950 transition hover:bg-gold-400"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-base-950 transition hover:bg-gold-400 sm:w-auto"
             >
               Get a Free Quote
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <a
               href={runtime.phoneHref}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/70 px-5 py-3.5 text-sm font-bold text-white transition hover:border-white hover:bg-white/10"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-white/70 px-5 py-3.5 text-sm font-bold text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
               Call {runtime.phone}

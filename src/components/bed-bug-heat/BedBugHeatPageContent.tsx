@@ -21,6 +21,7 @@ import {
 import { Accordion } from "@/components/Accordion";
 import { Reveal } from "@/components/Reveal";
 import { siteConfig } from "@/config/site";
+import { pickHero, type CmsHeroProps } from "@/lib/cms-hero";
 
 const superiorFeatures = [
   {
@@ -274,9 +275,15 @@ function AlbertaPins() {
   );
 }
 
-export function BedBugHeatPageContent() {
-  const phone = siteConfig.contact.phone;
-  const phoneHref = siteConfig.contact.phoneHref;
+export function BedBugHeatPageContent(props: CmsHeroProps = {}) {
+  const phone = props.phone || siteConfig.contact.phone;
+  const phoneHref = props.phoneHref || siteConfig.contact.phoneHref;
+  const hero = pickHero(props, {
+    title: "Professional Bed Bug Heat Treatment in Calgary & Edmonton",
+    description:
+      "Eco-Friendly Thermal Remediation for Absolute Pest Elimination. Chemical-free bed bug heat treatment serving Calgary, Edmonton, and surrounding areas.",
+    image: "/images/bed-bug-heat-hero.png",
+  });
 
   return (
     <>
@@ -284,7 +291,7 @@ export function BedBugHeatPageContent() {
       <section className="relative overflow-hidden bg-base-900 text-white">
         <div className="absolute inset-0">
           <Image
-            src="/images/bed-bug-heat-hero.png"
+            src={hero.image || "/images/bed-bug-heat-hero.png"}
             alt="Technician monitoring bed bug heat treatment equipment in a bedroom"
             fill
             priority
@@ -297,7 +304,7 @@ export function BedBugHeatPageContent() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 md:pt-36 lg:px-8 lg:pb-20 xl:pt-44">
+        <div className="relative mx-auto max-w-7xl px-4 pt-[calc(var(--header-offset)+1.5rem)] pb-16 md:pt-[calc(var(--header-offset)+2.5rem)] lg:px-8 lg:pb-20">
           <Reveal>
             <div className="flex flex-wrap gap-2">
               {["One-Time", "Chemical-Free", "Family Safe"].map((tag) => (
@@ -310,19 +317,20 @@ export function BedBugHeatPageContent() {
               ))}
             </div>
             <h1 className="font-display mt-5 max-w-2xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-[2.9rem]">
-              Professional Bed Bug Heat Treatment in{" "}
-              <span className="text-lime-400">Calgary &amp; Edmonton</span>
+              {props.heroTitle ? (
+                hero.title
+              ) : (
+                <>
+                  Professional Bed Bug Heat Treatment in{" "}
+                  <span className="text-lime-400">Calgary &amp; Edmonton</span>
+                </>
+              )}
             </h1>
             <p className="mt-3 max-w-xl text-lg font-semibold text-white/90">
               Eco-Friendly Thermal Remediation for Absolute Pest Elimination
             </p>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-white/75">
-              Are you struggling with a bed bug infestation? Traditional chemical
-              treatments can be stressful, slow, and disruptive. Ecoheat Pest
-              Control offers a superior alternative. Our advanced Bed Bug Heat
-              Treatment (Thermal Remediation) penetrates every corner of your
-              home. We safely eliminate bed bugs in a single, chemical-free
-              service.
+              {hero.description}
             </p>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-white/75">
               We proudly serve Calgary, Edmonton, and all surrounding areas. Our

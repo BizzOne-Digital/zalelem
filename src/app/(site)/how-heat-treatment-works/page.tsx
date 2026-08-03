@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import { HowHeatWorksPageContent } from "@/components/how-heat-works/HowHeatWorksPageContent";
+import { getCmsContent, getCmsPage } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "How Heat Treatment Works | Bed Bug Heat | Calgary & Edmonton",
-  description:
-    "Professional bed bug heat treatment across Calgary and Edmonton. Fire-safe thermal process kills all life stages including eggs in a single day, backed by a 1-year warranty.",
-  alternates: { canonical: "/how-heat-treatment-works" },
-  openGraph: {
-    title: "How Heat Treatment Works | Professional Bed Bug Heat Treatment",
-    description:
-      "Advanced thermal process kills all bed bug life stages, including eggs, in a single day. Serving Calgary, Edmonton, and surrounding areas.",
-    url: "/how-heat-treatment-works",
-    type: "website",
-    images: [{ url: "/images/how-heat-works-hero.png" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "how-heat-treatment-works");
+  return {
+    title: page?.title ?? "How Heat Treatment Works",
+    description: page?.description ?? "",
+    alternates: { canonical: "/how-heat-treatment-works" },
+  };
+}
 
-export default function HowHeatTreatmentWorksPage() {
-  return <HowHeatWorksPageContent />;
+export default async function HowHeatTreatmentWorksPage() {
+  const cms = await getCmsContent();
+  const page = getCmsPage(cms.pages, "how-heat-treatment-works");
+  return (
+    <HowHeatWorksPageContent
+      page={page}
+      heroTitle={page?.heroTitle}
+      heroDescription={page?.heroDescription}
+      heroImage={page?.heroImage}
+      phone={cms.site.phone}
+      phoneHref={cms.site.phoneHref}
+    />
+  );
 }

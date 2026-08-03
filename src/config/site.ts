@@ -29,8 +29,6 @@ export const siteConfig = {
     serviceAreaLabel: "Serving Calgary & Surrounding Areas",
     serviceAreas: [
       "Calgary",
-      "Airdrie",
-      "Chestermere",
       "Strathmore",
       "Cochrane",
       "Okotoks",
