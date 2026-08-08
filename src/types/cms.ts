@@ -18,6 +18,8 @@ export type EditablePage = {
   kind?: "page" | "location";
   /** Display label for locations (e.g. "Fort McMurray") */
   cityLabel?: string;
+  /** Province for location pages */
+  province?: "AB" | "BC";
   /** When false, hidden from nav / locations index */
   published?: boolean;
 };
@@ -28,6 +30,7 @@ export type EditableService = {
   slug: string;
   name: string;
   shortName: string;
+  category?: "pest" | "rodent" | "bird" | "specialty";
   cardDescription: string;
   heroTitle: string;
   heroDescription: string;

@@ -21,43 +21,37 @@ const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/services", label: "Pest Services" },
-  { href: "/commercial", label: "Commercial" },
+  { href: "/alberta", label: "Alberta" },
+  { href: "/british-columbia", label: "British Columbia" },
+  { href: "/bed-bug-packages", label: "Bed Bug Packages" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" },
 ];
 
-const footerServices = [
-  {
-    href: "/services/mice-rodent-control",
-    label: "Rodent Control",
-    icon: Rat,
-  },
-  {
-    href: "/services/bed-bug-control",
-    label: "Bed Bug Treatment",
-    icon: Bed,
-  },
-  {
-    href: "/services/carpenter-ant-control",
-    label: "Ant Control",
-    icon: Bug,
-  },
-  {
-    href: "/services/wasp-nest-removal",
-    label: "Wasp Removal",
-    icon: Zap,
-  },
-  {
-    href: "/services/cockroach-control",
-    label: "Cockroach Control",
-    icon: Bug,
-  },
-  {
-    href: "/services",
-    label: "Preventive Pest Care",
-    icon: Shield,
-  },
-];
+const FOOTER_SERVICE_SLUGS = [
+  "bed-bug-control",
+  "cockroach-control",
+  "ant-control",
+  "carpenter-ant-control",
+  "termite-control",
+  "wasp-nest-removal",
+  "mice-rodent-control",
+  "pigeon-control",
+  "droppings-cleanup",
+] as const;
+
+const serviceIcons: Record<string, typeof Bug> = {
+  "bed-bug-control": Bed,
+  "cockroach-control": Bug,
+  "ant-control": Bug,
+  "carpenter-ant-control": Bug,
+  "termite-control": Bug,
+  "wasp-nest-removal": Zap,
+  "mice-rodent-control": Rat,
+  "pigeon-control": Shield,
+  "droppings-cleanup": Shield,
+  "disinfection-services": Shield,
+};
 
 function InstagramIcon({ className = "" }: { className?: string }) {
   return (
@@ -104,9 +98,9 @@ function CalgarySkyline({ className = "" }: { className?: string }) {
 
 export function Footer({
   site,
+  services = [],
 }: {
   site?: SiteSettings;
-  /** Accepted for layout compatibility; footer uses fixed screenshot service list. */
   services?: EditableService[];
 }) {
   const year = new Date().getFullYear();
@@ -118,6 +112,15 @@ export function Footer({
     phoneHref: site?.phoneHref || siteConfig.contact.phoneHref,
     facebook: site?.facebook || siteConfig.contact.facebook,
   };
+
+  const footerServices = FOOTER_SERVICE_SLUGS.map((slug) => {
+    const service = services.find((s) => s.slug === slug);
+    return {
+      href: `/services/${slug}`,
+      label: service?.shortName || service?.name || slug,
+      icon: serviceIcons[slug] || Bug,
+    };
+  });
 
   return (
     <footer className="relative bg-[#07140c] text-white">
@@ -133,7 +136,7 @@ export function Footer({
                 Ready for a Pest-Free Property?
               </h2>
               <p className="mt-1 text-sm text-white/85">
-                Fast, safe, and reliable pest control across {runtime.city}.
+                Fast, safe, and reliable pest control across Alberta &amp; BC.
               </p>
             </div>
           </div>
@@ -178,8 +181,8 @@ export function Footer({
               </span>
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/75">
-              {runtime.city}&apos;s trusted choice for safe, effective, and
-              eco-conscious pest control solutions.
+              Trusted pest control across Alberta and British Columbia —
+              residential, commercial, fleets, and specialty services.
             </p>
             <div className="mt-6 flex items-center gap-2.5">
               <a

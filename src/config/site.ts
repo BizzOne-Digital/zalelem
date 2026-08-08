@@ -26,14 +26,18 @@ export const siteConfig = {
     province: "Alberta",
     provinceAbbr: "AB",
     country: "Canada",
-    serviceAreaLabel: "Serving Calgary & Surrounding Areas",
+    serviceAreaLabel: "Serving Alberta & British Columbia",
     serviceAreas: [
+      "Edmonton",
       "Calgary",
-      "Strathmore",
-      "Cochrane",
-      "Okotoks",
+      "Fort McMurray",
+      "Red Deer",
+      "Lethbridge",
+      "Vancouver",
+      "Victoria",
     ],
-    serviceAreasNote: "Nearby communities available by request.",
+    serviceAreasNote:
+      "Surrounding communities in Alberta and British Columbia available by request.",
   },
 
   contact: {
@@ -58,17 +62,17 @@ export const siteConfig = {
   },
 
   hero: {
-    eyebrow: "Calgary's Trusted Pest Control Experts",
-    headline: "Secure Your Calgary Property with Safe, Proven Pest Control",
-    headlineHighlight: "Calgary Property",
+    eyebrow: "Alberta & BC Pest Control Experts",
+    headline: "Secure Your Property with Safe, Proven Pest Control",
+    headlineHighlight: "Your Property",
     description:
-      "Fast, discreet, and responsible pest solutions for homes, businesses, property managers, hotels, healthcare facilities, schools, and industrial properties.",
+      "Fast, discreet pest solutions across Alberta and British Columbia — homes, businesses, hotels, healthcare, schools, fleets, and multi-unit properties.",
     primaryCta: "Get a Free Quote",
     secondaryCta: "Call 780-937-6257",
     trustIndicators: [
+      "Alberta & British Columbia",
       "Residential & Commercial",
-      "Top Rated Local Pest Experts",
-      "Eco-Friendly Products",
+      "Eco-Friendly Options",
       "Fast & Reliable Service",
     ],
   },
@@ -99,19 +103,20 @@ export const siteConfig = {
   seo: {
     siteUrl: "https://pestwarriors.ca",
     home: {
-      title: "Pest Control Calgary | Residential & Commercial | Pest Warriors",
+      title:
+        "Pest Control Alberta & BC | Residential & Commercial | Pest Warriors",
       description:
-        "Professional pest control in Calgary for homes, property managers, hotels, schools, healthcare facilities, and businesses. Request a customized quote from Pest Warriors.",
+        "Professional pest control across Alberta and British Columbia for homes, property managers, hotels, schools, healthcare facilities, fleets, and businesses.",
     },
     services: {
-      title: "Pest Control Services Calgary | Pest Warriors",
+      title: "Pest Control Services | Alberta & BC | Pest Warriors",
       description:
-        "Bed bug, carpenter ant, wasp, rodent, and cockroach control for Calgary homes and businesses. Inspection-led treatment plans from Pest Warriors.",
+        "Bed bugs, cockroaches, ants, carpenter ants, wasps, mice and rats, pigeon control, droppings cleanup, and disinfection across Alberta and British Columbia.",
     },
     contact: {
-      title: "Request Pest Control in Calgary | Pest Warriors",
+      title: "Request Pest Control | Alberta & BC | Pest Warriors",
       description:
-        "Request a free pest-control quote in Calgary. Tell Pest Warriors what you are experiencing and our team will contact you about the next steps.",
+        "Request a free pest-control quote in Alberta or British Columbia. Tell Pest Warriors what you are experiencing and our team will contact you.",
     },
   },
 

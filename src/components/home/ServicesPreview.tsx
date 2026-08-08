@@ -2,27 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { coreServiceSlugs } from "@/config/services";
 import type { EditableService } from "@/types/cms";
 
 const FALLBACK_IMAGES: Record<string, string> = {
   "mice-rodent-control": "/images/pests/mice-rodent.png",
   "carpenter-ant-control": "/images/pests/carpenter-ant.png",
+  "ant-control": "/images/pests/carpenter-ant.png",
+  "termite-control": "/images/pests/carpenter-ant.png",
   "wasp-nest-removal": "/images/pests/wasp.png",
   "bed-bug-control": "/images/pests/bed-bug.png",
   "cockroach-control": "/images/pests/cockroach.png",
+  "pigeon-control": "/images/pests/bed-bug.png",
+  "droppings-cleanup": "/images/pests/mice-rodent.png",
+  "disinfection-services": "/images/pests/cockroach.png",
 };
 
-const HOME_ORDER = [
-  "mice-rodent-control",
-  "carpenter-ant-control",
-  "wasp-nest-removal",
-  "bed-bug-control",
-  "cockroach-control",
-];
+const HOME_ORDER = [...coreServiceSlugs];
 
 export function ServicesPreview({
   services,
-  city,
 }: {
   services: EditableService[];
   city: string;
@@ -31,22 +30,19 @@ export function ServicesPreview({
     services.find((s) => s.slug === slug),
   ).filter(Boolean) as EditableService[];
 
-  const list =
-    ordered.length > 0
-      ? ordered
-      : services.slice(0, 5);
+  const list = ordered.length > 0 ? ordered : services.slice(0, 9);
 
   return (
     <section className="bg-surface py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <Reveal className="text-center">
-          <p className="section-eyebrow">We Can Help Eliminate</p>
+          <p className="section-eyebrow">Core Services Across Alberta &amp; BC</p>
           <h2 className="font-display mx-auto mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-            Most Common Pest Problems
+            Pest, Rodent, Bird &amp; Specialty Solutions
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((service, i) => {
             const imageSrc =
               service.heroImage ||
@@ -96,7 +92,7 @@ export function ServicesPreview({
             href="/services"
             className="inline-flex items-center gap-1.5 text-sm font-bold text-green-700 transition hover:text-lime-500"
           >
-            View all {city} pest services
+            View all pest services
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </Reveal>

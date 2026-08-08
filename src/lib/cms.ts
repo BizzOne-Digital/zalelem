@@ -59,4 +59,9 @@ export async function updateCmsContent(partial: Partial<CmsContent>) {
   return updated;
 }
 
-export { getCmsPage, getLocationLinks, getLocationPages } from "@/lib/cms-merge";
+export {
+  getCmsPage,
+  getLocationLinks,
+  getLocationLinksByProvince,
+  getLocationPages,
+} from "@/lib/cms-merge";

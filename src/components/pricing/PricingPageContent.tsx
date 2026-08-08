@@ -470,9 +470,12 @@ export function PricingPageContent({
               </h2>
               <p className="mt-4 max-w-md text-white/75">{data.ctaDescription}</p>
               <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
-                <Link href="/contact" className="btn-lime w-full sm:w-auto">
-                  Request a Free Quote
+                <Link href="/bed-bug-packages" className="btn-lime w-full sm:w-auto">
+                  Compare Gold / Silver / Bronze
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link href="/contact" className="inline-flex w-full items-center justify-center gap-2 rounded-lg border-2 border-white/45 px-5 py-3.5 text-sm font-bold text-white transition hover:border-lime-400 hover:text-lime-400 sm:w-auto">
+                  Request a Free Quote
                 </Link>
                 <a
                   href={phoneHref}

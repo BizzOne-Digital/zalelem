@@ -1,3 +1,4 @@
+import { cityPath, regionCities, type ProvinceCode } from "@/config/regions";
 import { defaultCmsContent } from "@/lib/default-content";
 import { defaultPricingContent } from "@/lib/default-pricing";
 import type {
@@ -105,6 +106,27 @@ export function mergeMissingDefaults(doc: CmsContent): { content: CmsContent; ch
         next.published = defaultPage.published;
         pageChanged = true;
       }
+      if (!page.province && defaultPage.province) {
+        next.province = defaultPage.province;
+        pageChanged = true;
+      }
+
+      // Refresh BC flagship pages when still on short placeholder copy.
+      if (
+        (defaultPage.slug === "vancouver" &&
+          (page.heroTitle === "Pest Control in Vancouver & Surrounding Areas" ||
+            (page.sections?.length ?? 0) < 4)) ||
+        (defaultPage.slug === "victoria" &&
+          (page.heroTitle === "Pest Control in Victoria & Surrounding Areas" ||
+            (page.sections?.length ?? 0) < 4))
+      ) {
+        next.title = defaultPage.title;
+        next.description = defaultPage.description;
+        next.heroTitle = defaultPage.heroTitle;
+        next.heroDescription = defaultPage.heroDescription;
+        next.sections = defaultPage.sections;
+        pageChanged = true;
+      }
 
       const { sections, changed: sectionsChanged } = mergeSections(
         page.sections ?? [],
@@ -140,6 +162,10 @@ export function mergeMissingDefaults(doc: CmsContent): { content: CmsContent; ch
         next.pricingNote = service.pricingNote;
         svcChanged = true;
       }
+      if (!existing.category && service.category) {
+        next.category = service.category;
+        svcChanged = true;
+      }
       const { sections, changed: sectionsChanged } = mergeSections(
         existing.sections ?? [],
         service.sections ?? [],
@@ -166,9 +192,38 @@ export function mergeMissingDefaults(doc: CmsContent): { content: CmsContent; ch
   const { pricing, changed: pricingChanged } = mergePricing(doc.pricing);
   if (pricingChanged) changed = true;
 
+  const site = { ...(doc.site ?? defaultCmsContent.site) };
+  const defaultAreas = defaultCmsContent.site.serviceAreas ?? [];
+  const currentAreas = Array.isArray(site.serviceAreas) ? [...site.serviceAreas] : [];
+  let areasChanged = false;
+  for (const area of defaultAreas) {
+    if (!currentAreas.includes(area)) {
+      currentAreas.push(area);
+      areasChanged = true;
+    }
+  }
+  if (areasChanged) {
+    site.serviceAreas = currentAreas;
+    changed = true;
+  }
+  if (
+    !site.serviceAreaLabel ||
+    site.serviceAreaLabel === "Serving Calgary & Surrounding Areas"
+  ) {
+    site.serviceAreaLabel = defaultCmsContent.site.serviceAreaLabel;
+    changed = true;
+  }
+  if (
+    !site.serviceAreasNote ||
+    site.serviceAreasNote === "Nearby communities available by request."
+  ) {
+    site.serviceAreasNote = defaultCmsContent.site.serviceAreasNote;
+    changed = true;
+  }
+
   return {
     content: {
-      site: doc.site ?? defaultCmsContent.site,
+      site,
       pages,
       services,
       faqs,
@@ -191,21 +246,30 @@ export function getLocationPages(pages: EditablePage[]): EditablePage[] {
   );
 }
 
-const KNOWN_LOCATION_SLUGS = new Set([
-  "calgary",
-  "edmonton",
-  "lethbridge",
-  "red-deer",
-  "fort-mcmurray",
-]);
+const KNOWN_LOCATION_SLUGS = new Set(regionCities.map((c) => c.slug));
 
 function isKnownLocationSlug(slug: string) {
   return KNOWN_LOCATION_SLUGS.has(slug);
 }
 
+function resolveProvince(page: EditablePage): ProvinceCode {
+  if (page.province === "AB" || page.province === "BC") return page.province;
+  const known = regionCities.find((c) => c.slug === page.slug);
+  return known?.province ?? "AB";
+}
+
 export function getLocationLinks(pages: EditablePage[]) {
   return getLocationPages(pages).map((p) => ({
-    href: `/${p.slug}`,
+    href: cityPath(p.slug, resolveProvince(p)),
     label: p.cityLabel || p.heroTitle || p.slug,
+    province: resolveProvince(p),
   }));
+}
+
+export function getLocationLinksByProvince(pages: EditablePage[]) {
+  const links = getLocationLinks(pages);
+  return {
+    AB: links.filter((l) => l.province === "AB"),
+    BC: links.filter((l) => l.province === "BC"),
+  };
 }

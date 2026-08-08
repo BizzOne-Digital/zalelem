@@ -28,7 +28,7 @@ export function ServiceArea() {
               Service Area
             </p>
             <h2 className="heading-rule heading-rule-left font-display mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
-              Proudly Serving {siteConfig.location.city} &amp; Nearby Communities
+              Proudly Serving Alberta &amp; British Columbia
             </h2>
             <div className="mt-7">
               <MapGraphic />
@@ -59,13 +59,16 @@ export function ServiceArea() {
             </h2>
             <p className="mt-4 leading-relaxed text-muted">
               Pest activity rarely improves on its own. Speak with Pest Warriors
-              about a customized solution for your {siteConfig.location.city}{" "}
+              about a customized solution for your Alberta or British Columbia
               property.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:max-w-xs">
               <Link href="/contact" className="btn-primary justify-center">
                 Request a Free Quote
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link href="/locations" className="btn-secondary justify-center">
+                Browse all locations
               </Link>
               <a href={siteConfig.contact.phoneHref} className="btn-secondary justify-center">
                 <Phone className="h-4 w-4" aria-hidden="true" />

@@ -23,9 +23,12 @@ type Tab = "pages" | "locations" | "services" | "pricing" | "faqs" | "settings";
 const RESERVED_SLUGS = new Set([
   "about",
   "admin",
+  "alberta",
   "api",
   "aprehend-bed-bugs",
   "bed-bug-heat-treatment",
+  "bed-bug-packages",
+  "british-columbia",
   "commercial",
   "contact",
   "diy-pest-control",
@@ -49,6 +52,7 @@ function emptyPage(kind: "page" | "location"): EditablePage {
     slug: kind === "location" ? `city-${stamp}` : `page-${stamp}`,
     kind,
     cityLabel: kind === "location" ? "New City" : undefined,
+    province: kind === "location" ? "AB" : undefined,
     published: true,
     title: kind === "location" ? "New Location" : "New Page",
     description: "",
@@ -542,6 +546,22 @@ function EditablePageForm({
               value={page.cityLabel ?? ""}
               onChange={(v) => onChange({ ...page, cityLabel: v })}
             />
+            <label className="block text-sm">
+              <span className="mb-1 block text-white/80">Province</span>
+              <select
+                className="w-full rounded-lg border border-white/20 bg-base-800 px-3 py-2"
+                value={page.province ?? "AB"}
+                onChange={(e) =>
+                  onChange({
+                    ...page,
+                    province: e.target.value === "BC" ? "BC" : "AB",
+                  })
+                }
+              >
+                <option value="AB">Alberta</option>
+                <option value="BC">British Columbia</option>
+              </select>
+            </label>
             <label className="flex items-center gap-2 text-sm text-white/80">
               <input
                 type="checkbox"

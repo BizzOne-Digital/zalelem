@@ -5,12 +5,15 @@
 
 export const pestOptions = [
   "Bed Bugs",
-  "Carpenter Ants",
-  "Wasps",
-  "Mice or Rodents",
   "Cockroaches",
-  "Fleas",
-  "Birds or Pigeons",
+  "Ants",
+  "Carpenter Ants",
+  "Termites",
+  "Wasps",
+  "Mice or Rats",
+  "Pigeons / Bird Control",
+  "Droppings Cleanup",
+  "Disinfection",
   "Other",
 ] as const;
 

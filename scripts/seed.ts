@@ -59,6 +59,7 @@ async function main() {
         { key: "main" },
         {
           $set: {
+            site: content.site,
             pages: content.pages,
             services: content.services,
             faqs: content.faqs,

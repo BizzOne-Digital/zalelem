@@ -8,9 +8,21 @@ const servicePrices: Record<string, { priceRange: string; pricingNote: string }>
     priceRange: "$350 – $1,500+",
     pricingNote: "Depends on treatment type & property size",
   },
+  "cockroach-control": {
+    priceRange: "$152 – $230+",
+    pricingNote: "Size & Property Dependent",
+  },
+  "ant-control": {
+    priceRange: "$120 – $250+",
+    pricingNote: "Size & Property Dependent",
+  },
   "carpenter-ant-control": {
     priceRange: "$150 – $260+",
     pricingNote: "Size & Property Dependent",
+  },
+  "termite-control": {
+    priceRange: "Quote on inspection",
+    pricingNote: "Pre- or post-construction",
   },
   "wasp-nest-removal": {
     priceRange: "$90 – $250+",
@@ -20,13 +32,17 @@ const servicePrices: Record<string, { priceRange: string; pricingNote: string }>
     priceRange: "$90 – $250+",
     pricingNote: "Size & Property Dependent",
   },
-  "cockroach-control": {
-    priceRange: "$152 – $230+",
-    pricingNote: "Size & Property Dependent",
-  },
-  "spider-control": {
+  "pigeon-control": {
     priceRange: "Quote on inspection",
-    pricingNote: "Property Dependent",
+    pricingNote: "Site Dependent",
+  },
+  "droppings-cleanup": {
+    priceRange: "Quote on inspection",
+    pricingNote: "Contamination Dependent",
+  },
+  "disinfection-services": {
+    priceRange: "Quote on inspection",
+    pricingNote: "Area Dependent",
   },
 };
 
@@ -585,6 +601,7 @@ const detailPages: EditablePage[] = [
     slug: "calgary",
     kind: "location",
     cityLabel: "Calgary",
+    province: "AB",
     published: true,
     title: "EcoHeat Pest Control Calgary | Eco-Friendly Pest Control",
     description:
@@ -674,6 +691,7 @@ const detailPages: EditablePage[] = [
     slug: "edmonton",
     kind: "location",
     cityLabel: "Edmonton",
+    province: "AB",
     published: true,
     title:
       "Edmonton Pest Control | Chemical-Free Heat Treatment | Ecoheat",
@@ -737,6 +755,7 @@ const detailPages: EditablePage[] = [
     slug: "lethbridge",
     kind: "location",
     cityLabel: "Lethbridge",
+    province: "AB",
     published: true,
     title: "Eco-Friendly Pest Control & Extermination in Lethbridge | Ecoheat",
     description:
@@ -828,6 +847,7 @@ const detailPages: EditablePage[] = [
     slug: "red-deer",
     kind: "location",
     cityLabel: "Red Deer",
+    province: "AB",
     published: true,
     title: "Eco-Friendly Pest Control & Extermination in Red Deer | Ecoheat",
     description:
@@ -902,6 +922,7 @@ const detailPages: EditablePage[] = [
     slug: "fort-mcmurray",
     kind: "location",
     cityLabel: "Fort McMurray",
+    province: "AB",
     published: true,
     title:
       "Eco-Friendly Pest Control & Extermination in Fort McMurray | Ecoheat",
@@ -976,6 +997,160 @@ const detailPages: EditablePage[] = [
           "Don't let pests take over your property. Contact Ecoheat Pest Control today for a free quote and discover how our eco-friendly, discreet extermination services can restore your peace of mind.",
         image: siteConfig.images.about.src,
         bullets: [        ],
+      },
+    ],
+  },
+  {
+    slug: "vancouver",
+    kind: "location",
+    cityLabel: "Vancouver",
+    province: "BC",
+    published: true,
+    title:
+      "Professional Pest Control Services in Vancouver, BC | Ecoheat Pest Control",
+    description:
+      "Vancouver’s trusted pest control for homes, hotels, care facilities, retail, and industrial properties. Chemical-free and low-toxicity treatments across the Lower Mainland.",
+    heroTitle:
+      "Vancouver Pest Control: Professional Quality Service from Local Experts",
+    heroDescription:
+      "Welcome to Ecoheat Pest Control, Vancouver’s trusted provider of premier pest management solutions — from proactive prevention to complete eradication across Vancouver and the Lower Mainland.",
+    heroImage: siteConfig.images.hero.src,
+    sections: [
+      {
+        id: "intro",
+        title: "Professional Quality Service from Local Experts",
+        content:
+          "Welcome to Ecoheat Pest Control, Vancouver’s trusted provider of premier pest management solutions. We handle everything from proactive prevention and structural protection to complete pest removal and eradication. No job is too large or too small. We specialise in both chemical-free and low-toxicity treatments tailored for residential, commercial, home cares, hotels, motels, retail and industrial properties.\n\nOur treatments are highly effective and engineered to be completely safe for newborns, the elderly, pregnant individuals, and anyone sensitive to chemical products.",
+        image: siteConfig.images.about.src,
+        bullets: [],
+      },
+      {
+        id: "core-services",
+        title: "Our Core Pest Control Services",
+        content:
+          "Full-service insect, rodent, bird, and cleanup solutions for Vancouver properties.",
+        image: siteConfig.images.hero.src,
+        bullets: [
+          "Insect Control: Eradication of bed bugs, cockroaches, wasps, carpenter ants, termites, and common nuisance ants.",
+          "Rodent & Bird Control: Humane, effective removal of mice and rats, along with professional pigeon exclusion.",
+          "Cleanup & Structural Repair: Professional pigeon netting installation, droppings removal, and remediation/disinfection of infested attic insulation.",
+        ],
+      },
+      {
+        id: "why-choose",
+        title: "Why Choose Ecoheat Pest Control?",
+        content:
+          "Local BC expertise with flexible, contract-free treatment options.",
+        image: siteConfig.images.about.src,
+        bullets: [
+          "14+ Years of Local Expertise: Based locally in British Columbia, we bring over 14 years of hands-on experience tracking specific regional pest behaviours and tackling the toughest local infestations.",
+          "Thermal Heat Treatment Pioneers: We specialise in safe, whole-structure thermal heat treatments designed to eliminate bed bugs in a single service.",
+          "No Mandatory Trapping Contracts: We focus on solving your pest problem right the first time, without locking you into long-term, mandatory contracts.",
+          "Flexible Treatment Options: Whether you require traditional treatments or chemical-free thermal solutions, we are Vancouver’s top choice for reliable pest control.",
+        ],
+      },
+      {
+        id: "service-areas",
+        title: "Our Vancouver & Lower Mainland Service Areas",
+        content:
+          "Rapid-response pest management across Vancouver and neighbouring municipalities in the Lower Mainland and Greater Vancouver area.",
+        image: "/images/pest-warriors-service-map.webp",
+        bullets: [
+          "Metro Vancouver West & Central: Vancouver (Downtown, Kitsilano, East Van, Kerrisdale), North Vancouver, West Vancouver, Burnaby, Richmond, New Westminster",
+          "Tri-Cities & Ridge Meadows: Coquitlam, Port Coquitlam, Port Moody, Maple Ridge, Pitt Meadows",
+          "South of the Fraser & Fraser Valley: Surrey, Delta (Ladner, Tsawwassen), Langley (City and Township), White Rock, Abbotsford, Chilliwack",
+        ],
+      },
+      {
+        id: "why-professional",
+        title: "Why Use a Professional Pest Control Company?",
+        content:
+          "Trained technicians identify the pest, treat safely, and help prevent reoccurrence.",
+        image: siteConfig.images.hero.src,
+        bullets: [
+          "A professional technician will know the species of your pest problem from experience and find the extent and cause fast after inspection.",
+          "They have the pest control training and certification to use effective controlled substances permissible under pesticide regulations when necessary.",
+          "They can safely administer the most suitable procedure for eliminating your pest problem.",
+          "They use techniques that prevent damage, contamination, and exposure to you, your employees, your family, and pets.",
+          "They advise you on preventing reoccurrence and provide a written report of control.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "victoria",
+    kind: "location",
+    cityLabel: "Victoria",
+    province: "BC",
+    published: true,
+    title:
+      "Professional Pest Control Services in Victoria, BC | Ecoheat Pest Control",
+    description:
+      "Greater Victoria’s trusted pest control for homes, hospitality, care facilities, retail, and industrial properties across the Capital Regional District.",
+    heroTitle:
+      "Victoria Pest Control: Professional Quality Service from Local Experts",
+    heroDescription:
+      "Welcome to Ecoheat Pest Control, Greater Victoria’s trusted provider of premier pest management solutions — chemical-free and low-toxicity treatments across Vancouver Island.",
+    heroImage: siteConfig.images.hero.src,
+    sections: [
+      {
+        id: "intro",
+        title: "Professional Quality Service from Local Experts",
+        content:
+          "Welcome to Ecoheat Pest Control, Greater Victoria’s trusted provider of premier pest management solutions. We handle everything from proactive prevention and structural protection to complete pest removal and eradication. No job is too large or too small.\n\nWe specialize in both chemical-free and low-toxicity treatments tailored for residential, commercial, senior living, hospitality, and industrial properties. Our certified technicians routinely service homes, hotels, motels, retail spaces, and care homes across Vancouver Island.",
+        image: siteConfig.images.about.src,
+        bullets: [],
+      },
+      {
+        id: "service-areas",
+        title: "Proudly Serving Greater Victoria & Surrounding Communities",
+        content:
+          "Fast, reliable pest control throughout the Capital Regional District (CRD).",
+        image: "/images/pest-warriors-service-map.webp",
+        bullets: [
+          "Victoria & Downtown",
+          "Saanich & Central Saanich",
+          "Langford & Colwood (West Shore)",
+          "Esquimalt & View Royal",
+          "Sidney & North Saanich",
+          "Oak Bay",
+          "Sooke",
+        ],
+      },
+      {
+        id: "core-services",
+        title: "Our Core Pest Control Services",
+        content:
+          "Thermal heat, insects, rodents, bird control, and structural disinfection for Victoria properties.",
+        image: siteConfig.images.hero.src,
+        bullets: [
+          "Thermal Heat Treatments: Whole-structure eco-friendly heat treatments eliminate bed bugs in a single service.",
+          "Insect Control: Rapid eradication of bed bugs, cockroaches, wasps, hornets, carpenter ants, termites, and common nuisance ants.",
+          "Rodent & Wildlife Control: Humane, effective removal and exclusion of mice, rats, and local wildlife.",
+          "Bird Control & Cleanup: Professional pigeon netting, humane bird deterrence, and droppings removal.",
+          "Structural Repair & Disinfection: Remediation, cleanup, and disinfection of infested attic insulation and crawlspaces.",
+        ],
+      },
+      {
+        id: "why-choose",
+        title: "Why Choose Ecoheat Pest Control?",
+        content:
+          "Local Vancouver Island expertise with chemical-free options and no mandatory contracts.",
+        image: siteConfig.images.about.src,
+        bullets: [
+          "14+ Years of Vancouver Island Expertise: Hands-on experience with Pacific Northwest pest behaviours.",
+          "Safe, Chemical-Free Treatment Pioneers: Thermal heat options without harmful chemical residues.",
+          "No Mandatory Trapping Contracts: Honest service that solves the problem the first time.",
+          "Flexible & Reliable Treatment Options: Traditional or chemical-free thermal solutions — discreet and professional.",
+        ],
+      },
+      {
+        id: "cta",
+        title: "Schedule Your Inspection Today",
+        content:
+          "Don't let pests take over your home or business. Contact Greater Victoria's local experts at Ecoheat Pest Control for a free consultation and dependable service.",
+        image: siteConfig.images.hero.src,
+        bullets: [],
       },
     ],
   },
@@ -1121,15 +1296,18 @@ const detailPages: EditablePage[] = [
   {
     slug: "service-area",
     title: "Service Area",
-    description: "Calgary and nearby communities served by Pest Warriors.",
-    heroTitle: "Proudly Serving Calgary & Nearby Communities",
-    heroDescription: "Local coverage with nearby service available by request.",
+    description:
+      "Alberta and British Columbia communities served by Pest Warriors.",
+    heroTitle: "Proudly Serving Alberta & British Columbia",
+    heroDescription:
+      "Coverage across major cities and surrounding communities — available by request.",
     heroImage: "/images/pest-warriors-service-map.webp",
     sections: [
       {
         id: "areas",
         title: "Areas We Serve",
-        content: "We currently serve Calgary and selected surrounding communities.",
+        content:
+          "We serve Alberta (Edmonton, Calgary, Fort McMurray, Red Deer, Lethbridge, and surrounding areas) and British Columbia (Vancouver, Victoria, and surrounding areas).",
         image: "/images/pest-warriors-service-map.webp",
         bullets: [...siteConfig.location.serviceAreas],
       },
@@ -1162,6 +1340,7 @@ export const defaultCmsContent: CmsContent = {
     slug: service.slug,
     name: service.name,
     shortName: service.shortName,
+    category: service.category,
     cardDescription: service.cardDescription,
     heroTitle: service.name,
     heroDescription: service.cardDescription,

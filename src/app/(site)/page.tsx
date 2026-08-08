@@ -6,6 +6,7 @@ import { PropertyTypes } from "@/components/home/PropertyTypes";
 import { WhyChoose } from "@/components/home/WhyChoose";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { OfferSection } from "@/components/home/OfferSection";
+import { ServiceArea } from "@/components/home/ServiceArea";
 import { FaqSchema, LocalBusinessSchema } from "@/components/StructuredData";
 import { StickyQuoteButton } from "@/components/StickyQuoteButton";
 import { getCmsContent } from "@/lib/cms";
@@ -42,6 +43,7 @@ export default async function HomePage() {
       <div className="pb-24 md:pb-0">
         <Hero />
         <ServicesPreview services={cms.services} city={cms.site.city} />
+        <ServiceArea />
         <AboutSection />
         <PropertyTypes />
         <WhyChoose />

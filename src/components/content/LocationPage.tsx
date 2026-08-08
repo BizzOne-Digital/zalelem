@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, MapPin, Phone, Star } from "lucide-react";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CtaPair } from "@/components/CtaPair";
 import {
   locationReviews,
   serviceTypeCards,
   type LocationCommunity,
 } from "@/config/locations";
-import { primaryServices } from "@/config/services";
+import { provinceMeta, type ProvinceCode } from "@/config/regions";
+import { filterCoreServices, primaryServices } from "@/config/services";
 import { siteConfig } from "@/config/site";
 import { getCmsContent, getCmsPage } from "@/lib/cms";
 
@@ -16,6 +18,7 @@ type Props = {
   cityLabel: string;
   contactArea?: string;
   communities?: LocationCommunity[];
+  provinceLabel?: string;
   children?: React.ReactNode;
 };
 
@@ -24,6 +27,7 @@ export async function LocationPage({
   cityLabel,
   contactArea,
   communities,
+  provinceLabel,
   children,
 }: Props) {
   const cms = await getCmsContent();
@@ -36,14 +40,28 @@ export async function LocationPage({
   const intro = page.sections[0];
   const featured = page.sections.slice(1);
   const areasSection = page.sections.find((s) => s.id === "service-areas");
+  const provinceCode = (page.province || "AB") as ProvinceCode;
+  const provinceName = provinceLabel || provinceMeta[provinceCode].name;
+  const provinceHref = provinceMeta[provinceCode].href;
 
   return (
     <>
       <section className="relative overflow-hidden bg-base-900 pt-[calc(var(--header-offset)+1.25rem)] pb-16 text-white md:pt-[calc(var(--header-offset)+2.5rem)] md:pb-20">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 text-center lg:px-8">
+          <div className="mb-4 flex justify-center">
+            <Breadcrumbs
+              items={[
+                { href: "/", label: "Home" },
+                { href: "/locations", label: "Locations" },
+                { href: provinceHref, label: provinceName },
+                { label: cityLabel },
+              ]}
+              tone="dark"
+            />
+          </div>
           <p className="text-xs font-bold tracking-[0.2em] text-green-400 uppercase">
-            Pest Control · {cityLabel}
+            Pest Control · {cityLabel}, {provinceName}
           </p>
           <h1 className="font-display mx-auto mt-3 max-w-4xl text-[1.75rem] font-extrabold tracking-tight sm:text-4xl md:text-5xl">
             {page.heroTitle}
@@ -230,7 +248,7 @@ export async function LocationPage({
             Common pests we treat in and around {cityLabel}.
           </p>
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {primaryServices.map((service) => (
+            {filterCoreServices(primaryServices).map((service) => (
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
